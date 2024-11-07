@@ -6,7 +6,7 @@ import static store.constants.ParserConstants.MIDNIGHT_TIME_FORMAT;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class DateParser {
+public class DateUtil {
 
     public static LocalDateTime dateParse(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);

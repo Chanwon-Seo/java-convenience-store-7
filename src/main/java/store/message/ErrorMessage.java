@@ -1,7 +1,5 @@
 package store.message;
 
-import org.assertj.core.condition.Not;
-
 public enum ErrorMessage {
     FILE_READ_ERROR("파일을 읽는 도중 오류가 발생했습니다."),
     EMPTY_DATA("데이터가 존재하지 않습니다."),

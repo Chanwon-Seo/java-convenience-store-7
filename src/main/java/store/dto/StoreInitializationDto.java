@@ -3,11 +3,11 @@ package store.dto;
 import java.util.List;
 
 public record StoreInitializationDto(
-        List<String> products,
-        List<String> promotions
+        List<ProductDto> productDtos,
+        List<PromotionDto> promotionDtos
 ) {
-    public static StoreInitializationDto of(List<String> products, List<String> promotions) {
-        return new StoreInitializationDto(products, promotions);
+    public static StoreInitializationDto of(List<ProductDto> productDtos, List<PromotionDto> promotionDtos) {
+        return new StoreInitializationDto(productDtos, promotionDtos);
     }
 
 }

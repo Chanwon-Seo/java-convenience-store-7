@@ -4,6 +4,8 @@ import static store.exception.FileReaderException.validateProductHeader;
 import static store.exception.FileReaderException.validatePromotionHeader;
 
 import java.util.List;
+import store.dto.ProductDto;
+import store.dto.PromotionDto;
 import store.dto.StoreInitializationDto;
 import store.parser.FileReaderParser;
 import store.util.FileReader;
@@ -20,28 +22,22 @@ public class FileReaderService {
         this.fileReaderParser = new FileReaderParser();
     }
 
-    public StoreInitializationDto initializeData() {
-        List<String> productData = readProductData();
-        List<String> promotionsData = readPromotionsData();
-        return StoreInitializationDto.of(productData, promotionsData);
+    public StoreInitializationDto initializeStoreData() {
+        List<ProductDto> productDtos = readProductData();
+        List<PromotionDto> promotionDtos = readPromotionData();
+        return StoreInitializationDto.of(productDtos, promotionDtos);
     }
 
-    public List<String> readProductData() {
+    public List<ProductDto> readProductData() {
         List<String> products = fileReader.readLinesFromFile(PRODUCTS_FILE);
         validateProductHeader(products);
-        List<String> removeHeaderProducts = removeHeader(products);
-        fileReaderParser.parse(removeHeaderProducts);
-        return null;
+        return fileReaderParser.parseProduct(products);
     }
 
-    public List<String> readPromotionsData() {
+    public List<PromotionDto> readPromotionData() {
         List<String> promotions = fileReader.readLinesFromFile(PROMOTIONS_FILE);
         validatePromotionHeader(promotions);
-        return removeHeader(promotions);
-    }
-
-    public List<String> removeHeader(List<String> list) {
-        return list.stream().skip(1).toList();
+        return fileReaderParser.parsePromotion(promotions);
     }
 
 }

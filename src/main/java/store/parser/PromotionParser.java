@@ -2,39 +2,30 @@ package store.parser;
 
 import static store.message.ErrorMessage.EMPTY_DATA;
 
-import java.util.ArrayList;
 import java.util.List;
 import store.domain.Promotion;
 import store.dto.PromotionDto;
 
 public class PromotionParser {
 
-    public List<Promotion> parse(List<String> promotions) {
+    public List<Promotion> parse(List<PromotionDto> promotions) {
         validate(promotions);
         return convertToPromotionList(promotions);
     }
 
-    private List<Promotion> convertToPromotionList(List<String> data) {
-        List<Promotion> promotions = new ArrayList<>();
-        for (String datum : data) {
-            PromotionDto promotionDto = toPromotionDto(datum);
-            Promotion promotion = new Promotion(promotionDto);
-            promotions.add(promotion);
-        }
-        return promotions;
+    public List<Promotion> convertToPromotionList(List<PromotionDto> data) {
+        return data.stream()
+                .map(Promotion::new).toList();
     }
 
-    public void validate(List<String> promotions) {
+    public void validate(List<PromotionDto> promotions) {
         validateDataEmpty(promotions);
     }
 
-    public void validateDataEmpty(List<String> promotions) {
+    public void validateDataEmpty(List<PromotionDto> promotions) {
         if (promotions.isEmpty()) {
             throw new IllegalArgumentException(EMPTY_DATA.getMessage());
         }
     }
 
-    private PromotionDto toPromotionDto(String data) {
-        return PromotionDto.toPromotionDto(data);
-    }
 }

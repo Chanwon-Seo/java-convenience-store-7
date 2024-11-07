@@ -13,7 +13,12 @@ public class InputView {
     }
 
     public List<OrderItemDto> getOrderItem() {
-        String input = Console.readLine();
-        return inputParser.parse(input);
+        try {
+            String input = Console.readLine();
+            return inputParser.parse(input);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return getOrderItem();
+        }
     }
 }

@@ -29,4 +29,7 @@ public class Promotion {
         return this.name.equals(productPromotionName);
     }
 
+    public String getName() {
+        return name;
+    }
 }

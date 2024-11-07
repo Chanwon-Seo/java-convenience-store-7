@@ -1,5 +1,12 @@
 package store.domain;
 
+import static store.constants.ProductConstants.OUT_OF_STOCK;
+import static store.constants.ProductConstants.PRODUCT_DESCRIPTION_PREFIX;
+import static store.constants.ProductConstants.UNIT_QUANTITY;
+import static store.constants.ProductConstants.UNIT_WON;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 import store.dto.ProductDto;
 import store.exception.ProductException;
 
@@ -20,19 +27,29 @@ public class Product {
         this.promotion = promotion;
     }
 
-    public String getName() {
-        return name;
+    public String getProductDescription() {
+        return PRODUCT_DESCRIPTION_PREFIX
+                + name + " "
+                + getFormattedWinnings(price) + UNIT_WON
+                + getFormattedQuantity()
+                + getFormattedPromotion();
     }
 
-    public int getPrice() {
-        return price;
+    public String getFormattedQuantity() {
+        if (quantity < 1) {
+            return OUT_OF_STOCK;
+        }
+        return getFormattedWinnings(quantity) + UNIT_QUANTITY;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getFormattedPromotion() {
+        if (promotion != null) {
+            return promotion.getName();
+        }
+        return "";
     }
 
-    public Promotion getPromotion() {
-        return promotion;
+    public String getFormattedWinnings(int number) {
+        return NumberFormat.getInstance(Locale.KOREA).format(number);
     }
 }

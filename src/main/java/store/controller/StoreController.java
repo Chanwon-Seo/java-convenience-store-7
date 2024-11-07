@@ -8,17 +8,20 @@ import store.dto.StoreInitializationDto;
 import store.parser.ProductParser;
 import store.parser.PromotionParser;
 import store.service.FileReaderService;
+import store.service.StoreService;
 
 public class StoreController {
 
     private final FileReaderService fileReaderService;
     private final PromotionParser promotionParser;
     private final ProductParser productParser;
+    private final StoreService storeService;
 
     public StoreController() {
         this.fileReaderService = new FileReaderService();
         this.productParser = new ProductParser();
         this.promotionParser = new PromotionParser();
+        this.storeService = new StoreService();
     }
 
     public StoreDto initialize() {
@@ -30,6 +33,10 @@ public class StoreController {
         List<Promotion> promotions = promotionParser.parse(storeInitializationDto.promotions());
         List<Product> products = productParser.parse(storeInitializationDto.products(), promotions);
         return StoreDto.of(products, promotions);
+    }
+
+    public void run(StoreDto storeDto) {
+        storeService.processOrder(storeDto);
     }
 
 }

@@ -1,5 +1,6 @@
 package store.controller;
 
+import store.dto.StoreDto;
 import store.dto.StoreInitializationDto;
 import store.service.FileReaderService;
 import store.service.ParserService;
@@ -15,13 +16,13 @@ public class StoreController {
 
     }
 
-    public void initialize() {
+    public StoreDto initialize() {
         StoreInitializationDto storeInitializationDto = fileReaderService.initializeData();
-        parse(storeInitializationDto);
+        return parse(storeInitializationDto);
     }
 
-    public void parse(StoreInitializationDto storeInitializationDto) {
-        parserService.parseStoreInitialization(storeInitializationDto);
+    public StoreDto parse(StoreInitializationDto storeInitializationDto) {
+        return parserService.parseStoreInitialization(storeInitializationDto);
     }
 
 }

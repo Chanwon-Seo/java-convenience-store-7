@@ -16,8 +16,8 @@ public class PromotionParser {
 
     private List<Promotion> convertToPromotionList(List<String> data) {
         List<Promotion> promotions = new ArrayList<>();
-        for (int i = 1; i < data.size(); i++) {
-            PromotionDto promotionDto = toPromotionDto(data.get(i));
+        for (String datum : data) {
+            PromotionDto promotionDto = toPromotionDto(datum);
             Promotion promotion = new Promotion(promotionDto);
             promotions.add(promotion);
         }

@@ -27,6 +27,10 @@ public class Product {
         this.promotion = promotion;
     }
 
+    public boolean isProductName(String productPromotionName) {
+        return this.name.equals(productPromotionName);
+    }
+
     public String getProductDescription() {
         return PRODUCT_DESCRIPTION_PREFIX
                 + name + " "
@@ -51,5 +55,21 @@ public class Product {
 
     public String getFormattedWinnings(int number) {
         return NumberFormat.getInstance(Locale.KOREA).format(number);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
     }
 }

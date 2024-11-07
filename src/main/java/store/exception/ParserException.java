@@ -2,8 +2,8 @@ package store.exception;
 
 import static store.message.ErrorMessage.EMPTY_DATA;
 import static store.message.ErrorMessage.INVALID_HEADER;
-import static store.parser.ParserConstants.PRODUCT_HEADER;
-import static store.parser.ParserConstants.PROMOTION_HEADER;
+import static store.constants.ParserConstants.PRODUCT_HEADER;
+import static store.constants.ParserConstants.PROMOTION_HEADER;
 
 import java.util.List;
 

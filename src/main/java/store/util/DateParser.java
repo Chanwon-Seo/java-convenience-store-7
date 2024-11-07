@@ -1,7 +1,7 @@
 package store.util;
 
-import static store.parser.ParserConstants.DATE_TIME_FORMAT;
-import static store.parser.ParserConstants.MIDNIGHT_TIME_FORMAT;
+import static store.constants.ParserConstants.DATE_TIME_FORMAT;
+import static store.constants.ParserConstants.MIDNIGHT_TIME_FORMAT;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

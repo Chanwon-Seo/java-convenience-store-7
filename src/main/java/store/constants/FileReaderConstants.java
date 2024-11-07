@@ -1,4 +1,4 @@
-package store.util;
+package store.constants;
 
 public class FileReaderConstants {
     public static final String RESOURCES_DIRECTORY = "src/main/resources";

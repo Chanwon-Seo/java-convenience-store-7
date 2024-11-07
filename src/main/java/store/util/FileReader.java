@@ -1,7 +1,7 @@
 package store.util;
 
 import static store.message.ErrorMessage.FILE_READ_ERROR;
-import static store.util.FileReaderConstants.RESOURCES_DIRECTORY;
+import static store.constants.FileReaderConstants.RESOURCES_DIRECTORY;
 
 import java.io.IOException;
 import java.nio.file.Files;

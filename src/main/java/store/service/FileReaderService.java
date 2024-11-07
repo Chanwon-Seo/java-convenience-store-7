@@ -1,7 +1,7 @@
 package store.service;
 
-import static store.util.FileReaderConstants.PRODUCTS_FILE;
-import static store.util.FileReaderConstants.PROMOTIONS_FILE;
+import static store.constants.FileReaderConstants.PRODUCTS_FILE;
+import static store.constants.FileReaderConstants.PROMOTIONS_FILE;
 
 import java.util.List;
 import store.dto.StoreInitializationDto;

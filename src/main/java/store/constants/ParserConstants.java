@@ -1,4 +1,4 @@
-package store.parser;
+package store.constants;
 
 public class ParserConstants {
     public static final String PRODUCT_HEADER = "name,price,quantity,promotion";

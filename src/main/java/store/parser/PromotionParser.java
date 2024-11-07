@@ -1,7 +1,6 @@
 package store.parser;
 
-import static store.exception.ParserException.validateDataEmpty;
-import static store.exception.ParserException.validatePromotionHeader;
+import static store.message.ErrorMessage.EMPTY_DATA;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +9,9 @@ import store.dto.PromotionDto;
 
 public class PromotionParser {
 
-    public List<Promotion> parse(List<String> data) {
-        validate(data);
-        return convertToPromotionList(data);
+    public List<Promotion> parse(List<String> promotions) {
+        validate(promotions);
+        return convertToPromotionList(promotions);
     }
 
     private List<Promotion> convertToPromotionList(List<String> data) {
@@ -25,9 +24,14 @@ public class PromotionParser {
         return promotions;
     }
 
-    private void validate(List<String> data) {
-        validateDataEmpty(data);
-        validatePromotionHeader(data);
+    public void validate(List<String> promotions) {
+        validateDataEmpty(promotions);
+    }
+
+    public void validateDataEmpty(List<String> promotions) {
+        if (promotions.isEmpty()) {
+            throw new IllegalArgumentException(EMPTY_DATA.getMessage());
+        }
     }
 
     private PromotionDto toPromotionDto(String data) {

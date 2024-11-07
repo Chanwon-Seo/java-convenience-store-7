@@ -1,7 +1,6 @@
 package store.parser;
 
-import static store.exception.ParserException.validateDataEmpty;
-import static store.exception.ParserException.validateProductHeader;
+import static store.message.ErrorMessage.EMPTY_DATA;
 import static store.message.ErrorMessage.NOT_FOUND_PROMOTION;
 
 import java.util.ArrayList;
@@ -38,8 +37,8 @@ public class ProductParser {
 
     public Map<String, List<ProductDto>> groupDataByProductName(List<String> productRows) {
         Map<String, List<ProductDto>> groupedProductDataMap = new LinkedHashMap<>();
-        for (int i = 1; i < productRows.size(); i++) {
-            ProductDto productDto = ProductDto.toProductDto(productRows.get(i));
+        for (String productRow : productRows) {
+            ProductDto productDto = ProductDto.toProductDto(productRow);
             groupedProductDataMap.putIfAbsent(productDto.name(), new ArrayList<>());
             groupedProductDataMap.get(productDto.name()).add(productDto);
         }
@@ -89,6 +88,11 @@ public class ProductParser {
 
     public void validate(List<String> productRows) {
         validateDataEmpty(productRows);
-        validateProductHeader(productRows);
+    }
+
+    public void validateDataEmpty(List<String> data) {
+        if (data.isEmpty()) {
+            throw new IllegalArgumentException(EMPTY_DATA.getMessage());
+        }
     }
 }

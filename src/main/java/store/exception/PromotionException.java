@@ -8,7 +8,7 @@ import static store.message.ErrorMessage.START_DATE_AFTER_END_DATE;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 import store.dto.PromotionDto;
-import store.util.DateParser;
+import store.util.DateUtil;
 
 public abstract class PromotionException {
     private static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
@@ -45,8 +45,8 @@ public abstract class PromotionException {
     }
 
     public static void validateDateOrder(String startDate, String endDate) {
-        LocalDateTime parsedStartDate = DateParser.dateParse(startDate);
-        LocalDateTime parsedEndDate = DateParser.dateParse(endDate);
+        LocalDateTime parsedStartDate = DateUtil.dateParse(startDate);
+        LocalDateTime parsedEndDate = DateUtil.dateParse(endDate);
         if (parsedStartDate.isAfter(parsedEndDate)) {
             throw new IllegalArgumentException(START_DATE_AFTER_END_DATE.getMessage());
         }

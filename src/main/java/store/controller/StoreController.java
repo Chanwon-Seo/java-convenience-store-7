@@ -39,7 +39,8 @@ public class StoreController {
     }
 
     public void run(StoreDto storeDto) {
-        storeService.processOrder(storeDto);
+        Store store = new Store(storeDto);
+        storeService.processOrder(store);
     }
 
 }

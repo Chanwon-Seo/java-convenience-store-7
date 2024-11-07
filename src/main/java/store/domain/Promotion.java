@@ -3,7 +3,7 @@ package store.domain;
 import java.time.LocalDateTime;
 import store.dto.PromotionDto;
 import store.exception.PromotionException;
-import store.util.DateParser;
+import store.util.DateUtil;
 
 public class Promotion {
 
@@ -21,8 +21,8 @@ public class Promotion {
         this.name = promotionDto.name();
         this.buy = Integer.parseInt(promotionDto.buy());
         this.get = Integer.parseInt(promotionDto.get());
-        this.startDate = DateParser.dateParse(promotionDto.startDate());
-        this.endDate = DateParser.dateParse(promotionDto.endDate());
+        this.startDate = DateUtil.dateParse(promotionDto.startDate());
+        this.endDate = DateUtil.dateParse(promotionDto.endDate());
     }
 
     public boolean isPromotionName(String productPromotionName) {

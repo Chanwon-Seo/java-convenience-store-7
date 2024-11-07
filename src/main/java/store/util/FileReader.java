@@ -1,7 +1,6 @@
 package store.util;
 
 import static store.message.ErrorMessage.FILE_READ_ERROR;
-import static store.constants.FileReaderConstants.RESOURCES_DIRECTORY;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,6 +8,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class FileReader {
+    private static final String RESOURCES_DIRECTORY = "src/main/resources";
 
     public List<String> readLinesFromFile(String fileName) {
         try {

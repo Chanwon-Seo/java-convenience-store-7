@@ -1,12 +1,13 @@
 package store.exception;
 
-import static store.constants.ParserConstants.PRODUCT_HEADER;
-import static store.constants.ParserConstants.PROMOTION_HEADER;
 import static store.message.ErrorMessage.INVALID_HEADER;
 
 import java.util.List;
 
 public class FileReaderException {
+    private static final String PRODUCT_HEADER = "name,price,quantity,promotion";
+    private static final String PROMOTION_HEADER = "name,buy,get,start_date,end_date";
+
     public static void validateProductHeader(List<String> products) {
         if (!PRODUCT_HEADER.equals(products.getFirst())) {
             throw new IllegalArgumentException(INVALID_HEADER.getMessage());

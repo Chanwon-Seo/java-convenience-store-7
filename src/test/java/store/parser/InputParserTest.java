@@ -7,12 +7,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class InputParserTest {
+    private static final int MIN_ORDER_ITEMS_INPUT_LENGTH = 5;
     private final InputParser inputParser = new InputParser();
 
     @ParameterizedTest
     @MethodSource("provideValidInputs")
     void 유효한_입력_테스트(String input) {
-        inputParser.validate(input);
+        inputParser.validateOrderItems(input, MIN_ORDER_ITEMS_INPUT_LENGTH);
     }
 
     static Stream<String> provideValidInputs() {
@@ -26,7 +27,7 @@ class InputParserTest {
     @ParameterizedTest
     @MethodSource("provideInvalidInputs")
     void 유효하지_않은_입력_테스트(String input) {
-        assertThrows(IllegalArgumentException.class, () -> inputParser.validate(input));
+        assertThrows(IllegalArgumentException.class, () -> inputParser.validateOrderItems(input, MIN_ORDER_ITEMS_INPUT_LENGTH));
     }
 
 

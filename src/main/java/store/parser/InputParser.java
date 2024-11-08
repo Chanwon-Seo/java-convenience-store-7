@@ -17,10 +17,10 @@ public class InputParser {
     private static final String ITEM_FORMAT_REGEX = "[^\\-]+-\\d+";
     private static final String QUANTITY_SEPARATOR = "-";
 
-    private static final int MIN_INPUT_LENGTH = 5;
+    private static final int MIN_ORDER_ITEMS_INPUT_LENGTH = 5;
 
     public List<OrderItemDto> parseOrderItems(String input) {
-        validate(input);
+        validateOrderItems(input, MIN_ORDER_ITEMS_INPUT_LENGTH);
         String[] items = splitItems(input);
         List<OrderItemDto> orderItemDtos = new ArrayList<>();
         for (String item : items) {
@@ -29,8 +29,8 @@ public class InputParser {
         return orderItemDtos;
     }
 
-    public void validate(String input) {
-        validateInputLength(input);
+    public void validateOrderItems(String input, int minInputLength) {
+        validateInputLength(input, minInputLength);
         validateBrackets(input);
     }
 
@@ -39,8 +39,8 @@ public class InputParser {
         return cleanInput.split(ITEM_SEPARATOR_REGEX);
     }
 
-    private void validateInputLength(String input) {
-        if (input.length() < MIN_INPUT_LENGTH) {
+    private void validateInputLength(String input, int minInputLength) {
+        if (input.length() < minInputLength) {
             exception();
         }
     }

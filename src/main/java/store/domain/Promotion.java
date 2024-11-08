@@ -2,7 +2,7 @@ package store.domain;
 
 import java.time.LocalDateTime;
 import store.dto.PromotionDto;
-import store.exception.PromotionException;
+import store.validation.PromotionValidator;
 import store.util.DateUtil;
 
 public class Promotion {
@@ -17,7 +17,7 @@ public class Promotion {
     }
 
     public Promotion(PromotionDto promotionDto) {
-        PromotionException.validate(promotionDto);
+        PromotionValidator.validate(promotionDto);
         this.name = promotionDto.name();
         this.buy = Integer.parseInt(promotionDto.buy());
         this.get = Integer.parseInt(promotionDto.get());

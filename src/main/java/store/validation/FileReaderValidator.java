@@ -1,10 +1,10 @@
-package store.exception;
+package store.validation;
 
 import static store.message.ErrorMessage.INVALID_HEADER;
 
 import java.util.List;
 
-public abstract class FileReaderException {
+public abstract class FileReaderValidator {
     private static final String PRODUCT_HEADER = "name,price,quantity,promotion";
     private static final String PROMOTION_HEADER = "name,buy,get,start_date,end_date";
 

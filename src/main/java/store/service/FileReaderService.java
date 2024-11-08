@@ -1,7 +1,7 @@
 package store.service;
 
-import static store.exception.FileReaderException.validateProductHeader;
-import static store.exception.FileReaderException.validatePromotionHeader;
+import static store.validation.FileReaderValidator.validateProductHeader;
+import static store.validation.FileReaderValidator.validatePromotionHeader;
 
 import java.util.List;
 import store.dto.ProductDto;

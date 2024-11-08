@@ -8,7 +8,7 @@ import static store.constants.ProductConstants.UNIT_WON;
 import java.text.NumberFormat;
 import java.util.Locale;
 import store.dto.ProductDto;
-import store.exception.ProductException;
+import store.validation.ProductValidator;
 
 public class Product {
     private String name;
@@ -20,7 +20,7 @@ public class Product {
     }
 
     public Product(ProductDto productDto, Promotion promotion) {
-        ProductException.validate(productDto);
+        ProductValidator.validate(productDto);
         this.name = productDto.name();
         this.price = Integer.parseInt(productDto.price());
         this.quantity = Integer.parseInt(productDto.quantity());

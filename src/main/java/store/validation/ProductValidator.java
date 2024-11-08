@@ -1,11 +1,11 @@
-package store.exception;
+package store.validation;
 
 import static store.message.ErrorMessage.EMPTY_DATE;
 import static store.message.ErrorMessage.NON_NUMERIC;
 
 import store.dto.ProductDto;
 
-public abstract class ProductException {
+public abstract class ProductValidator {
 
     public static void validate(ProductDto productDto) {
         validateEmptyField(productDto.name());

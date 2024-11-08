@@ -2,7 +2,7 @@ package store.validation;
 
 import static store.message.ErrorMessage.QUANTITY_EXCEEDS_STOCK;
 
-public class OrderItemValidator {
+public abstract class OrderItemValidator {
     private static final int MINIMUM_QUANTITY = 0;
 
     public static void validate(int quantity) {

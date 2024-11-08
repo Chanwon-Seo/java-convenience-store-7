@@ -1,4 +1,4 @@
-package store.exception;
+package store.validation;
 
 import static store.message.ErrorMessage.EMPTY_DATE;
 import static store.message.ErrorMessage.INVALID_DATE_FORMAT;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import store.dto.PromotionDto;
 import store.util.DateUtil;
 
-public abstract class PromotionException {
+public abstract class PromotionValidator {
     private static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
     private static final Pattern DATE_FORMAT_PATTERN = Pattern.compile(DATE_PATTERN);
 

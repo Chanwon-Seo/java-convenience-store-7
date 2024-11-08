@@ -14,7 +14,7 @@ public class Store {
         this.promotions = storeDto.promotions();
     }
 
-    public List<Product> flattenProducts() {
+    public List<Product> findAll() {
         List<Product> flattenedProducts = new ArrayList<>();
         for (List<Product> productList : products.values()) {
             flattenedProducts.addAll(productList);
@@ -22,11 +22,20 @@ public class Store {
         return flattenedProducts;
     }
 
-    public Map<String, List<Product>> getProducts() {
-        return products;
+    public boolean existsByProductName(String productName) {
+        List<Product> getProducts = products.get(productName);
+        return getProducts != null;
     }
 
-    public List<Promotion> getPromotions() {
-        return promotions;
+    public int findTotalQuantityByProductName(String productName) {
+        List<Product> getProducts = products.get(productName);
+        int totalQuantity = 0;
+        if (getProducts != null) {
+            for (Product product : getProducts) {
+                totalQuantity += product.getQuantity();
+            }
+        }
+        return totalQuantity;
     }
+
 }

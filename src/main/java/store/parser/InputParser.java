@@ -4,7 +4,6 @@ import static store.message.ErrorMessage.INVALID_INPUT_FORMAT_ERROR;
 
 import java.util.ArrayList;
 import java.util.List;
-import store.domain.OrderItem;
 import store.dto.OrderItemDto;
 
 public class InputParser {
@@ -20,12 +19,12 @@ public class InputParser {
 
     private static final int MIN_INPUT_LENGTH = 5;
 
-    public List<OrderItemDto> parse(String input) {
+    public List<OrderItemDto> parseOrderItems(String input) {
         validate(input);
         String[] items = splitItems(input);
         List<OrderItemDto> orderItemDtos = new ArrayList<>();
         for (String item : items) {
-            orderItemDtos.add(parseOrderItem(item));
+            orderItemDtos.add(convertToOrderItemDtos(item));
         }
         return orderItemDtos;
     }
@@ -53,23 +52,25 @@ public class InputParser {
     }
 
     private void checkBracketsBalance(String input) {
-        int openBrackets = 0;
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
-
-            if (c == OPEN_BRACKET) {
-                openBrackets++;
-            }
-
-            if (c == CLOSE_BRACKET) {
-                openBrackets--;
-            }
-        }
-
+        int openBrackets = countOpenBrackets(input);
         if (openBrackets != 0) {
             exception();
         }
     }
+
+    private int countOpenBrackets(String input) {
+        int openBrackets = 0;
+        for (char c : input.toCharArray()) {
+            if (c == OPEN_BRACKET) {
+                openBrackets++;
+            }
+            if (c == CLOSE_BRACKET) {
+                openBrackets--;
+            }
+        }
+        return openBrackets;
+    }
+
 
     private void checkNestedBrackets(String input) {
         if (input.contains(NESTED_BRACKET_ERROR_REGEX) ||
@@ -85,7 +86,7 @@ public class InputParser {
         }
     }
 
-    private OrderItemDto parseOrderItem(String item) {
+    private OrderItemDto convertToOrderItemDtos(String item) {
         if (!item.matches(ITEM_FORMAT_REGEX)) {
             exception();
         }

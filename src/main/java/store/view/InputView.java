@@ -15,10 +15,11 @@ public class InputView {
     public List<OrderItemDto> getOrderItem() {
         try {
             String input = Console.readLine();
-            return inputParser.parse(input);
+            return inputParser.parseOrderItems(input);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return getOrderItem();
         }
     }
+    
 }

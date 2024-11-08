@@ -21,5 +21,16 @@ public class InputView {
             return getOrderItem();
         }
     }
-    
+
+    public String getYesOrNo() {
+        try {
+            String input = Console.readLine();
+            inputParser.parseYesOrNo(input);
+            return input;
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return getYesOrNo();
+        }
+    }
+
 }

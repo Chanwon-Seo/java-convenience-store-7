@@ -16,11 +16,15 @@ public class InputParser {
     private static final String NESTED_BRACKET_CLOSE_ERROR_REGEX = "]]";
     private static final String ITEM_FORMAT_REGEX = "[^\\-]+-\\d+";
     private static final String QUANTITY_SEPARATOR = "-";
-
     private static final int MIN_ORDER_ITEMS_INPUT_LENGTH = 5;
 
+    private static final char YES = 'Y';
+    private static final char NO = 'N';
+    private static final int YES_OR_NO_INPUT_LENGTH = 1;
+
+
     public List<OrderItemDto> parseOrderItems(String input) {
-        validateOrderItems(input, MIN_ORDER_ITEMS_INPUT_LENGTH);
+        validateOrderItems(input);
         String[] items = splitItems(input);
         List<OrderItemDto> orderItemDtos = new ArrayList<>();
         for (String item : items) {
@@ -29,9 +33,34 @@ public class InputParser {
         return orderItemDtos;
     }
 
-    public void validateOrderItems(String input, int minInputLength) {
-        validateInputLength(input, minInputLength);
+    public void parseYesOrNo(String input) {
+        validateYesOrNo(input);
+    }
+
+
+    public void validateOrderItems(String input) {
+        validateInputLength(input, MIN_ORDER_ITEMS_INPUT_LENGTH);
         validateBrackets(input);
+    }
+
+    public void validateYesOrNo(String input) {
+        validateYNLength(input, YES_OR_NO_INPUT_LENGTH);
+        validateUppercase(input);
+        validateYN(input);
+    }
+
+    private void validateUppercase(String input) {
+        if (!Character.isUpperCase(input.charAt(0))) {
+            exception();
+        }
+    }
+
+    private void validateYN(String input) {
+        char YN = input.charAt(0);
+        if (YN == YES || YN == NO) {
+            return;
+        }
+        exception();
     }
 
     private String[] splitItems(String input) {
@@ -41,6 +70,12 @@ public class InputParser {
 
     private void validateInputLength(String input, int minInputLength) {
         if (input.length() < minInputLength) {
+            exception();
+        }
+    }
+
+    private void validateYNLength(String input, int minInputLength) {
+        if (input.length() != minInputLength) {
             exception();
         }
     }

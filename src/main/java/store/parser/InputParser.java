@@ -4,6 +4,7 @@ import static store.message.ErrorMessage.INVALID_INPUT_FORMAT_ERROR;
 
 import java.util.ArrayList;
 import java.util.List;
+import store.domain.OrderItem;
 import store.dto.OrderItemDto;
 
 public class InputParser {
@@ -89,7 +90,7 @@ public class InputParser {
             exception();
         }
         String[] itemParts = item.split(QUANTITY_SEPARATOR);
-        return OrderItemDto.toOrderItemDto(itemParts[0], Integer.parseInt(itemParts[1]));
+        return new OrderItemDto(itemParts[0], Integer.parseInt(itemParts[1]));
     }
 
     private void exception() {

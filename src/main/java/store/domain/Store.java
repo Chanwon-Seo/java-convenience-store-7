@@ -6,8 +6,8 @@ import java.util.Map;
 import store.dto.StoreDto;
 
 public class Store {
-    private Map<String, List<Product>> products;
-    private List<Promotion> promotions;
+    private final Map<String, List<Product>> products;
+    private final List<Promotion> promotions;
 
     public Store(StoreDto storeDto) {
         this.products = storeDto.products();

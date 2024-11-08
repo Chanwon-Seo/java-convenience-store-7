@@ -51,7 +51,7 @@ public class FileReaderParser {
     }
 
     public PromotionDto createPromotionDto(String[] split) {
-        return PromotionDto.toPromotionDto(split[0], split[1], split[2], split[3], split[4]);
+        return new PromotionDto(split[0], split[1], split[2], split[3], split[4]);
     }
 
     public String normalizePromotion(String promotion) {

@@ -9,7 +9,4 @@ public record StoreDto(
         Map<String, List<Product>> products,
         List<Promotion> promotions
 ) {
-    public static StoreDto of(Map<String, List<Product>> products, List<Promotion> promotions) {
-        return new StoreDto(products, promotions);
-    }
 }

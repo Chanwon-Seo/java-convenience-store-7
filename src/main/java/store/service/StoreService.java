@@ -25,10 +25,9 @@ public class StoreService {
         List<Product> products = store.findAll();
         outputView.showStoreOverview(products);
         Cart cart = setOrderItem(store);
-        System.out.println();
     }
 
-    public Cart setOrderItem(Store store) {
+    private Cart setOrderItem(Store store) {
         outputView.askProductNameAndQuantity();
         List<OrderItemDto> orderItemDtos = inputView.getOrderItem();
         try {
@@ -45,5 +44,4 @@ public class StoreService {
         orderItems.forEach(cart::addItem);
         return cart;
     }
-
 }

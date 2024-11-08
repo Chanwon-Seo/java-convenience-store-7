@@ -25,7 +25,7 @@ public class FileReaderService {
     public StoreInitializationDto initializeStoreData() {
         List<ProductDto> productDtos = readProductData();
         List<PromotionDto> promotionDtos = readPromotionData();
-        return StoreInitializationDto.of(productDtos, promotionDtos);
+        return new StoreInitializationDto(productDtos, promotionDtos);
     }
 
     public List<ProductDto> readProductData() {

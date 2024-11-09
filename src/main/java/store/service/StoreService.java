@@ -22,12 +22,11 @@ public class StoreService {
         this.cartItemParser = new CartItemParser();
     }
 
-    public Cart processOrder(Store store) {
+    public void processOrder(Store store) {
         List<Product> products = store.findAll();
         outputView.showStoreOverview(products);
         Cart cart = setOrderItem(store);
         setAdditionalProduct(cart, store);
-        return cart;
     }
 
     private Cart setOrderItem(Store store) {

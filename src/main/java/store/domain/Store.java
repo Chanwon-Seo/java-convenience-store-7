@@ -35,8 +35,7 @@ public class Store {
     }
 
     public boolean existsByProductName(String productName) {
-        List<Product> getProducts = products.get(productName);
-        return getProducts != null;
+        return products.containsKey(productName);
     }
 
     public int findTotalQuantityByProductName(String productName) {

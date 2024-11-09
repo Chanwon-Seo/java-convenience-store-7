@@ -1,6 +1,7 @@
 package store.validation;
 
 import static store.message.ErrorMessage.NOT_FOUND_PRODUCT;
+import static store.message.ErrorMessage.QUANTITY_BELOW_MINIMUM;
 import static store.message.ErrorMessage.QUANTITY_EXCEEDS_STOCK;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public abstract class CartItemValidator {
 
     public static void validateQuantity(int quantity) {
         if (quantity <= MINIMUM_QUANTITY) {
-            throw new IllegalArgumentException(QUANTITY_EXCEEDS_STOCK.getMessage());
+            throw new IllegalArgumentException(QUANTITY_BELOW_MINIMUM.getMessage());
         }
     }
 

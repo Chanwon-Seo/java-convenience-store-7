@@ -2,6 +2,7 @@ package store.view;
 
 import static store.message.OutputMessage.FREE_PRODUCT_OFFER_MESSAGE;
 import static store.message.OutputMessage.ORDER_INSTRUCTION_MESSAGE;
+import static store.message.OutputMessage.PROMOTION_CONDITION_NOT_MET_MESSAGE;
 import static store.message.OutputMessage.STORE_OVERVIEW_MESSAGE;
 
 import java.util.List;
@@ -33,5 +34,10 @@ public class OutputView {
     public void askAdditionalProduct(String productName, int get) {
         System.out.println();
         System.out.printf(FREE_PRODUCT_OFFER_MESSAGE.getMessage(), productName, get);
+    }
+
+    public void askForUnmetPromotion(String productName, int get) {
+        System.out.println();
+        System.out.printf(PROMOTION_CONDITION_NOT_MET_MESSAGE.getMessage(), productName, get);
     }
 }

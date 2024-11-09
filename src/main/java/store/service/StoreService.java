@@ -51,12 +51,30 @@ public class StoreService {
         for (OrderItem orderItem : cart.getOrderItems()) {
             Product product = findProductWithPromotion(store, orderItem.getProductName());
             Promotion promotion = product.getPromotion();
-
             if (isEligibleForAdditionalProduct(orderItem, product, promotion)) {
                 offerAdditionalProduct(orderItem, promotion);
                 continue;
             }
+            if (orderItem.getQuantity() > product.getQuantity()) {
+                int totalQuantity = handleUnmetQuantity(orderItem, product, promotion);
+                handleUnmetQuantity(orderItem, totalQuantity);
+            }
         }
+    }
+
+    private void handleUnmetQuantity(OrderItem orderItem, int totalQuantity) {
+        outputView.askForUnmetPromotion(orderItem.getProductName(), totalQuantity);
+        if (!inputView.getYesOrNo()) {
+            orderItem.decreaseQuantity(totalQuantity);
+        }
+    }
+
+    private int handleUnmetQuantity(OrderItem orderItem, Product product, Promotion promotion) {
+        int requiredQuantity = promotion.getBuy() + promotion.getGet();
+        int unmetQuantity = orderItem.getQuantity() - product.getQuantity();
+        int freeItems = unmetQuantity / requiredQuantity;
+
+        return unmetQuantity + freeItems;
     }
 
     private Product findProductWithPromotion(Store store, String productName) {
@@ -76,7 +94,7 @@ public class StoreService {
 
     private void updateOrderItemQuantityIfAccepted(OrderItem orderItem, int additionalQuantity) {
         if (inputView.getYesOrNo()) {
-            orderItem.updateQuantity(additionalQuantity);
+            orderItem.increaseQuantity(additionalQuantity);
         }
     }
 

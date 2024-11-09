@@ -20,7 +20,11 @@ public class OrderItem {
         return quantity;
     }
 
-    public void updateQuantity(int updateQuantity) {
+    public void increaseQuantity(int updateQuantity) {
         this.quantity += updateQuantity;
+    }
+
+    public void decreaseQuantity(int updateQuantity) {
+        this.quantity -= updateQuantity;
     }
 }

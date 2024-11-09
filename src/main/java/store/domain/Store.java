@@ -22,6 +22,16 @@ public class Store {
         return flattenedProducts;
     }
 
+    public Product findProductsByProductNameAndPromotion(String productName) {
+        List<Product> productList = products.get(productName);
+        for (Product product : productList) {
+            if (product != null) {
+                return product;
+            }
+        }
+        return null;
+    }
+
     public boolean existsByProductName(String productName) {
         List<Product> getProducts = products.get(productName);
         return getProducts != null;

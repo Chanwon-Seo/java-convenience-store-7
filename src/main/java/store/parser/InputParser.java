@@ -33,8 +33,9 @@ public class InputParser {
         return orderItemDtos;
     }
 
-    public void parseYesOrNo(String input) {
+    public boolean parseYesOrNo(String input) {
         validateYesOrNo(input);
+        return input.charAt(YES_OR_NO_INPUT_LENGTH - 1) == YES;
     }
 
 

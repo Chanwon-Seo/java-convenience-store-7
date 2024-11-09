@@ -22,11 +22,10 @@ public class InputView {
         }
     }
 
-    public String getYesOrNo() {
+    public boolean getYesOrNo() {
         try {
             String input = Console.readLine();
-            inputParser.parseYesOrNo(input);
-            return input;
+            return inputParser.parseYesOrNo(input);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return getYesOrNo();

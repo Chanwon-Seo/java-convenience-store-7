@@ -4,6 +4,7 @@ import java.util.List;
 import store.domain.Cart;
 import store.domain.OrderItem;
 import store.domain.Product;
+import store.domain.Promotion;
 import store.domain.Store;
 import store.dto.OrderItemDto;
 import store.parser.OrderItemParser;
@@ -25,6 +26,7 @@ public class StoreService {
         List<Product> products = store.findAll();
         outputView.showStoreOverview(products);
         Cart cart = setOrderItem(store);
+        setAdditionalProduct(cart, store);
     }
 
     private Cart setOrderItem(Store store) {
@@ -44,4 +46,38 @@ public class StoreService {
         orderItems.forEach(cart::addItem);
         return cart;
     }
+
+    private void setAdditionalProduct(Cart cart, Store store) {
+        for (OrderItem orderItem : cart.getOrderItems()) {
+            Product product = findProductWithPromotion(store, orderItem.getProductName());
+            Promotion promotion = product.getPromotion();
+
+            if (isEligibleForAdditionalProduct(orderItem, product, promotion)) {
+                offerAdditionalProduct(orderItem, promotion);
+                continue;
+            }
+        }
+    }
+
+    private Product findProductWithPromotion(Store store, String productName) {
+        return store.findProductsByProductNameAndPromotion(productName);
+    }
+
+    private boolean isEligibleForAdditionalProduct(OrderItem orderItem, Product product, Promotion promotion) {
+        int requiredQuantity = promotion.getBuy() + promotion.getGet();
+        return orderItem.getQuantity() % requiredQuantity >= promotion.getBuy()
+                && orderItem.getQuantity() + promotion.getGet() <= product.getQuantity();
+    }
+
+    private void offerAdditionalProduct(OrderItem orderItem, Promotion promotion) {
+        outputView.askAdditionalProduct(orderItem.getProductName(), promotion.getGet());
+        updateOrderItemQuantityIfAccepted(orderItem, promotion.getGet());
+    }
+
+    private void updateOrderItemQuantityIfAccepted(OrderItem orderItem, int additionalQuantity) {
+        if (inputView.getYesOrNo()) {
+            orderItem.updateQuantity(additionalQuantity);
+        }
+    }
+
 }

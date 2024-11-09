@@ -11,4 +11,16 @@ public class OrderItem {
         this.productName = productName;
         this.quantity = quantity;
     }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void updateQuantity(int updateQuantity) {
+        this.quantity += updateQuantity;
+    }
 }

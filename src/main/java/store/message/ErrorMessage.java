@@ -10,7 +10,7 @@ public enum ErrorMessage {
     INVALID_DATE_FORMAT("날짜 표현이 잘못되었습니다."),
     START_DATE_AFTER_END_DATE("시작일이 종료일보다 늦을 수 없습니다."),
     NOT_FOUND_PROMOTION("찾을 수 없는 프로모션 입니다."),
-    INVALID_INPUT_FORMAT_ERROR("올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요."),
+    INVALID_INPUT_FORMAT_ERROR("올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.\n"),
     NOT_FOUND_PRODUCT("존재하지 않는 상품입니다. 다시 입력해 주세요.\n"),
     QUANTITY_BELOW_MINIMUM("주문수량이 1이상이어야 합니다."),
     QUANTITY_EXCEEDS_STOCK("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.\n"),

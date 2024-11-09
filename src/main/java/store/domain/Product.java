@@ -4,22 +4,25 @@ import static store.constants.ProductConstants.OUT_OF_STOCK;
 import static store.constants.ProductConstants.PRODUCT_DESCRIPTION_PREFIX;
 import static store.constants.ProductConstants.UNIT_QUANTITY;
 import static store.constants.ProductConstants.UNIT_WON;
+import static store.message.ErrorMessage.*;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Optional;
 import store.dto.ProductDto;
+import store.message.ErrorMessage;
 import store.validation.ProductValidator;
 
 public class Product {
     private String name;
     private int price;
     private int quantity;
-    private Promotion promotion;
+    private Optional<Promotion> promotion;
 
     private Product() {
     }
 
-    public Product(ProductDto productDto, Promotion promotion) {
+    public Product(ProductDto productDto, Optional<Promotion> promotion) {
         ProductValidator.validate(productDto);
         this.name = productDto.name();
         this.price = Integer.parseInt(productDto.price());
@@ -47,8 +50,8 @@ public class Product {
     }
 
     public String getFormattedPromotion() {
-        if (promotion != null) {
-            return promotion.getName();
+        if (promotion.isPresent()) {
+            return promotion.get().getName();
         }
         return "";
     }
@@ -70,6 +73,6 @@ public class Product {
     }
 
     public Promotion getPromotion() {
-        return promotion;
+        return promotion.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PROMOTION.getMessage()));
     }
 }

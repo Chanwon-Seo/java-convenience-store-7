@@ -1,5 +1,7 @@
 package store.domain;
 
+import static store.message.ErrorMessage.NOT_FOUND_PRODUCT;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +26,8 @@ public class Store {
 
     public Product findProductsByProductNameAndPromotion(String productName) {
         List<Product> productList = products.get(productName);
-        for (Product product : productList) {
-            if (product != null) {
-                return product;
-            }
-        }
-        return null;
+        return productList.stream().findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage()));
     }
 
     public boolean existsByProductName(String productName) {

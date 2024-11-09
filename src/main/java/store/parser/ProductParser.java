@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import store.domain.Product;
 import store.domain.Promotion;
 import store.dto.ProductDto;
@@ -54,7 +55,7 @@ public class ProductParser {
 
     public Product createProductFromDto(ProductDto productDto, List<Promotion> availablePromotions) {
         Promotion promotion = promotionUtil.findMatchingPromotion(productDto.promotion(), availablePromotions);
-        return new Product(productDto, promotion);
+        return new Product(productDto, Optional.ofNullable(promotion));
     }
 
     public void applyDefaultPromotionIfMissing(Map<String, List<ProductDto>> groupedProductDtos) {

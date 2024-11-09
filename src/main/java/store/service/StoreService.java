@@ -71,10 +71,10 @@ public class StoreService {
 
     private int handleUnmetQuantity(OrderItem orderItem, Product product, Promotion promotion) {
         int requiredQuantity = promotion.getBuy() + promotion.getGet();
-        int unmetQuantity = orderItem.getQuantity() - product.getQuantity();
-        int freeItems = unmetQuantity / requiredQuantity;
+        int quantityDifference = orderItem.getQuantity() - product.getQuantity();
+        int quantityRemainder = product.getQuantity() % requiredQuantity;
 
-        return unmetQuantity + freeItems;
+        return quantityRemainder + quantityDifference;
     }
 
     private Product findProductWithPromotion(Store store, String productName) {

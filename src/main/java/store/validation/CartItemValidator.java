@@ -28,7 +28,7 @@ public abstract class CartItemValidator {
 
     private static void validateProductExists(List<OrderItemDto> orderItemDtos, Store store) {
         for (OrderItemDto orderItemDto : orderItemDtos) {
-            if (!store.existsByProductName(orderItemDto.productName())) {
+            if (store.existsByProductName(orderItemDto.productName())) {
                 throw new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage());
             }
         }
@@ -36,8 +36,7 @@ public abstract class CartItemValidator {
 
     private static void validateProductStockQuantity(List<OrderItemDto> orderItemDtos, Store store) {
         for (OrderItemDto orderItemDto : orderItemDtos) {
-            int totalQuantity = store.findTotalQuantityByProductName(orderItemDto.productName());
-            if (orderItemDto.quantity() > totalQuantity) {
+            if (!store.isTotalQuantityByProductName(orderItemDto)) {
                 throw new IllegalArgumentException(QUANTITY_EXCEEDS_STOCK.getMessage());
             }
         }

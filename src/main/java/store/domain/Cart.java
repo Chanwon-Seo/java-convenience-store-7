@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public Cart() {
     }
 
-    public void addItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
+    public void addItem(CartItem cartItem) {
+        cartItems.add(cartItem);
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
+    public List<CartItem> getOrderItems() {
+        return cartItems;
     }
 }

@@ -4,16 +4,16 @@ import static store.message.ErrorMessage.NOT_FOUND_PRODUCT;
 import static store.message.ErrorMessage.QUANTITY_EXCEEDS_STOCK;
 
 import java.util.List;
-import store.domain.OrderItem;
+import store.domain.CartItem;
 import store.domain.Store;
 import store.dto.OrderItemDto;
 
-public class OrderItemParser {
+public class CartItemParser {
 
-    public List<OrderItem> parse(List<OrderItemDto> orderItemDtos, Store store) {
+    public List<CartItem> parse(List<OrderItemDto> orderItemDtos, Store store) {
         validator(orderItemDtos, store);
         return orderItemDtos.stream()
-                .map(orderitemDto -> new OrderItem(orderitemDto.productName(), orderitemDto.quantity()))
+                .map(orderItemDto -> new CartItem(orderItemDto.productName(), orderItemDto.quantity()))
                 .toList();
     }
 
@@ -22,7 +22,8 @@ public class OrderItemParser {
         validateProductQuantity(orderItemDtos, products);
     }
 
-    public void validateProductExistence(List<OrderItemDto> orderItemDtos, Store store) {
+
+    private void validateProductExistence(List<OrderItemDto> orderItemDtos, Store store) {
         for (OrderItemDto orderItemDto : orderItemDtos) {
             if (!store.existsByProductName(orderItemDto.productName())) {
                 throw new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage());
@@ -30,7 +31,7 @@ public class OrderItemParser {
         }
     }
 
-    public void validateProductQuantity(List<OrderItemDto> orderItemDtos, Store store) {
+    private void validateProductQuantity(List<OrderItemDto> orderItemDtos, Store store) {
         for (OrderItemDto orderItemDto : orderItemDtos) {
             int totalQuantity = store.findTotalQuantityByProductName(orderItemDto.productName());
             if (orderItemDto.quantity() > totalQuantity) {

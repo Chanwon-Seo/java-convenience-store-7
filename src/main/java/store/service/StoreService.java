@@ -2,76 +2,77 @@ package store.service;
 
 import java.util.List;
 import store.domain.Cart;
-import store.domain.OrderItem;
+import store.domain.CartItem;
 import store.domain.Product;
 import store.domain.Promotion;
 import store.domain.Store;
 import store.dto.OrderItemDto;
-import store.parser.OrderItemParser;
+import store.parser.CartItemParser;
 import store.view.InputView;
 import store.view.OutputView;
 
 public class StoreService {
     private final OutputView outputView;
     private final InputView inputView;
-    private final OrderItemParser orderItemParser;
+    private final CartItemParser cartItemParser;
 
     public StoreService() {
         this.outputView = new OutputView();
         this.inputView = new InputView();
-        this.orderItemParser = new OrderItemParser();
+        this.cartItemParser = new CartItemParser();
     }
 
-    public void processOrder(Store store) {
+    public Cart processOrder(Store store) {
         List<Product> products = store.findAll();
         outputView.showStoreOverview(products);
         Cart cart = setOrderItem(store);
         setAdditionalProduct(cart, store);
+        return cart;
     }
 
     private Cart setOrderItem(Store store) {
         outputView.askProductNameAndQuantity();
         List<OrderItemDto> orderItemDtos = inputView.getOrderItem();
         try {
-            List<OrderItem> orderItems = orderItemParser.parse(orderItemDtos, store);
-            return setCart(orderItems);
+            List<CartItem> cartItems = cartItemParser.parse(orderItemDtos, store);
+            return setCart(cartItems);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return setOrderItem(store);
         }
     }
 
-    private Cart setCart(List<OrderItem> orderItems) {
+    private Cart setCart(List<CartItem> cartItems) {
         Cart cart = new Cart();
-        orderItems.forEach(cart::addItem);
+        cartItems.forEach(cart::addItem);
         return cart;
     }
 
     private void setAdditionalProduct(Cart cart, Store store) {
-        for (OrderItem orderItem : cart.getOrderItems()) {
-            Product product = findProductWithPromotion(store, orderItem.getProductName());
+        for (CartItem cartItem : cart.getOrderItems()) {
+            Product product = findProductWithPromotion(store, cartItem.getProductName());
             Promotion promotion = product.getPromotion();
-            if (isEligibleForAdditionalProduct(orderItem, product, promotion)) {
-                offerAdditionalProduct(orderItem, promotion);
+            if (isEligibleForAdditionalProduct(cartItem, product, promotion)) {
+                offerAdditionalProduct(cartItem, promotion);
                 continue;
             }
-            if (orderItem.getQuantity() > product.getQuantity()) {
-                int totalQuantity = handleUnmetQuantity(orderItem, product, promotion);
-                handleUnmetQuantity(orderItem, totalQuantity);
+            if (cartItem.getQuantity() > product.getQuantity()) {
+                int totalQuantity = handleUnmetQuantity(cartItem, product, promotion);
+                handleUnmetQuantity(cartItem, totalQuantity);
             }
         }
     }
 
-    private void handleUnmetQuantity(OrderItem orderItem, int totalQuantity) {
-        outputView.askForUnmetPromotion(orderItem.getProductName(), totalQuantity);
+    private void handleUnmetQuantity(CartItem cartItem, int totalQuantity) {
+        outputView.askForUnmetPromotion(cartItem.getProductName(), totalQuantity);
         if (!inputView.getYesOrNo()) {
-            orderItem.decreaseQuantity(totalQuantity);
+            cartItem.decreaseQuantity(totalQuantity);
         }
     }
 
-    private int handleUnmetQuantity(OrderItem orderItem, Product product, Promotion promotion) {
+    private int handleUnmetQuantity(CartItem cartItem, Product product, Promotion promotion) {
         int requiredQuantity = promotion.getBuy() + promotion.getGet();
-        int quantityDifference = orderItem.getQuantity() - product.getQuantity();
+        int quantityDifference = cartItem.getQuantity() - product.getQuantity();
         int quantityRemainder = product.getQuantity() % requiredQuantity;
 
         return quantityRemainder + quantityDifference;
@@ -81,20 +82,20 @@ public class StoreService {
         return store.findProductsByProductNameAndPromotion(productName);
     }
 
-    private boolean isEligibleForAdditionalProduct(OrderItem orderItem, Product product, Promotion promotion) {
+    private boolean isEligibleForAdditionalProduct(CartItem cartItem, Product product, Promotion promotion) {
         int requiredQuantity = promotion.getBuy() + promotion.getGet();
-        return orderItem.getQuantity() % requiredQuantity >= promotion.getBuy()
-                && orderItem.getQuantity() + promotion.getGet() <= product.getQuantity();
+        return cartItem.getQuantity() % requiredQuantity >= promotion.getBuy()
+                && cartItem.getQuantity() + promotion.getGet() <= product.getQuantity();
     }
 
-    private void offerAdditionalProduct(OrderItem orderItem, Promotion promotion) {
-        outputView.askAdditionalProduct(orderItem.getProductName(), promotion.getGet());
-        updateOrderItemQuantityIfAccepted(orderItem, promotion.getGet());
+    private void offerAdditionalProduct(CartItem cartItem, Promotion promotion) {
+        outputView.askAdditionalProduct(cartItem.getProductName(), promotion.getGet());
+        updateOrderItemQuantityIfAccepted(cartItem, promotion.getGet());
     }
 
-    private void updateOrderItemQuantityIfAccepted(OrderItem orderItem, int additionalQuantity) {
+    private void updateOrderItemQuantityIfAccepted(CartItem cartItem, int additionalQuantity) {
         if (inputView.getYesOrNo()) {
-            orderItem.increaseQuantity(additionalQuantity);
+            cartItem.increaseQuantity(additionalQuantity);
         }
     }
 

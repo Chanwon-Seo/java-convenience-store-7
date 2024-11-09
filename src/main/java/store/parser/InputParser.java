@@ -22,7 +22,6 @@ public class InputParser {
     private static final char NO = 'N';
     private static final int YES_OR_NO_INPUT_LENGTH = 1;
 
-
     public List<OrderItemDto> parseOrderItems(String input) {
         validateOrderItems(input);
         String[] items = splitItems(input);
@@ -38,14 +37,14 @@ public class InputParser {
         return input.charAt(YES_OR_NO_INPUT_LENGTH - 1) == YES;
     }
 
-
     public void validateOrderItems(String input) {
-        validateInputLength(input, MIN_ORDER_ITEMS_INPUT_LENGTH);
+        validateInputLength(input);
         validateBrackets(input);
     }
 
     public void validateYesOrNo(String input) {
-        validateYNLength(input, YES_OR_NO_INPUT_LENGTH);
+        validateEmpty(input);
+        validateYNLength(input);
         validateUppercase(input);
         validateYN(input);
     }
@@ -57,7 +56,7 @@ public class InputParser {
     }
 
     private void validateYN(String input) {
-        char YN = input.charAt(0);
+        char YN = input.charAt(YES_OR_NO_INPUT_LENGTH - 1);
         if (YN == YES || YN == NO) {
             return;
         }
@@ -69,14 +68,20 @@ public class InputParser {
         return cleanInput.split(ITEM_SEPARATOR_REGEX);
     }
 
-    private void validateInputLength(String input, int minInputLength) {
-        if (input.length() < minInputLength) {
+    private void validateInputLength(String input) {
+        if (input.length() < MIN_ORDER_ITEMS_INPUT_LENGTH) {
             exception();
         }
     }
 
-    private void validateYNLength(String input, int minInputLength) {
-        if (input.length() != minInputLength) {
+    private void validateEmpty(String input) {
+        if (input == null || input.isEmpty()) {
+            exception();
+        }
+    }
+
+    private void validateYNLength(String input) {
+        if (input.length() != YES_OR_NO_INPUT_LENGTH) {
             exception();
         }
     }

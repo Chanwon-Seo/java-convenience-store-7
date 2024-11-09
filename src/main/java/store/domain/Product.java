@@ -29,10 +29,6 @@ public class Product {
         this.promotion = promotion;
     }
 
-    public boolean isProductName(String productPromotionName) {
-        return this.name.equals(productPromotionName);
-    }
-
     public String getProductDescription() {
         return PRODUCT_DESCRIPTION_PREFIX
                 + name + " "
@@ -49,20 +45,29 @@ public class Product {
     }
 
     public String getFormattedPromotion() {
-        if (promotion.isPresent()) {
-            return promotion.get().getName();
-        }
-        return "";
+        return promotion.map(Promotion::getName).orElse("");
     }
 
-    public boolean isEligibleForPromotion(int orderedQuantity) {
-        if (promotion.isPresent()) {
-            Promotion promotionInfo = promotion.get();
-            int remainingQuantityForPromotion = orderedQuantity % promotion.get().getTotalRequiredQuantity();
-            return orderedQuantity <= quantity
-                    && remainingQuantityForPromotion + promotionInfo.getGet() <= quantity;
+    public boolean isEligibleForStandardPromotion(int orderedQuantity) {
+        if (promotion.isEmpty()) {
+            return false;
         }
-        return false;
+        Promotion promotionInfo = promotion.get();
+        return orderedQuantity <= quantity
+                && getRemainingItemsForPromotion(orderedQuantity, promotionInfo) + promotionInfo.getGet() <= quantity;
+    }
+
+    public boolean isEligibleForBonusProduct(int orderedQuantity) {
+        if (promotion.isEmpty()) {
+            return false;
+        }
+        Promotion promotionInfo = promotion.get();
+        return getRemainingItemsForPromotion(orderedQuantity, promotionInfo) >= promotionInfo.getBuy()
+                && orderedQuantity + promotionInfo.getGet() <= quantity;
+    }
+
+    public int getRemainingItemsForPromotion(int orderedQuantity, Promotion promotionInfo) {
+        return orderedQuantity % promotionInfo.getTotalRequiredQuantity();
     }
 
     public String getFormattedWinnings(int number) {

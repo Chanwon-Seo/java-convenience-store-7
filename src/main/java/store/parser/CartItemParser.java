@@ -20,7 +20,7 @@ public class CartItemParser {
 
     public CartItem generateCartItemWithPromotion(OrderItemDto orderItemDto, Store store) {
         Product product = store.findProductsByProductNameAndPromotion(orderItemDto.productName());
-        if (product.isEligibleForPromotion(orderItemDto.quantity())) {
+        if (product.isEligibleForStandardPromotion(orderItemDto.quantity())) {
             return createCartItemWithPromotion(orderItemDto, product);
         }
         return createCartItemForInsufficientStock(orderItemDto, store);

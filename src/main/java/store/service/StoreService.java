@@ -62,17 +62,11 @@ public class StoreService {
     }
 
     private boolean applyPromotionIfEligible(CartItem cartItem, Product product, Promotion promotion) {
-        if (isEligibleForAdditionalProduct(cartItem, product, promotion)) {
+        if (product.isEligibleForBonusProduct(cartItem.getQuantity())) {
             offerAdditionalProduct(cartItem, promotion);
             return true;
         }
         return false;
-    }
-
-    private boolean isEligibleForAdditionalProduct(CartItem cartItem, Product product, Promotion promotion) {
-        int requiredQuantity = promotion.getBuy() + promotion.getGet();
-        return cartItem.getQuantity() % requiredQuantity >= promotion.getBuy()
-                && cartItem.getQuantity() + promotion.getGet() <= product.getQuantity();
     }
 
     private void offerAdditionalProduct(CartItem cartItem, Promotion promotion) {

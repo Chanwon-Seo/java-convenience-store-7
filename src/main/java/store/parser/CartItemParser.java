@@ -1,43 +1,40 @@
 package store.parser;
 
-import static store.message.ErrorMessage.NOT_FOUND_PRODUCT;
-import static store.message.ErrorMessage.QUANTITY_EXCEEDS_STOCK;
+import static store.validation.CartItemValidator.validateOrderItems;
 
+import java.util.ArrayList;
 import java.util.List;
 import store.domain.CartItem;
+import store.domain.Product;
 import store.domain.Store;
 import store.dto.OrderItemDto;
 
 public class CartItemParser {
 
     public List<CartItem> parse(List<OrderItemDto> orderItemDtos, Store store) {
-        validator(orderItemDtos, store);
+        validateOrderItems(orderItemDtos, store);
         return orderItemDtos.stream()
-                .map(orderItemDto -> new CartItem(orderItemDto.productName(), orderItemDto.quantity()))
+                .map(orderItemDto -> generateCartItemWithPromotion(orderItemDto, store))
                 .toList();
     }
 
-    public void validator(List<OrderItemDto> orderItemDtos, Store products) {
-        validateProductExistence(orderItemDtos, products);
-        validateProductQuantity(orderItemDtos, products);
+    public CartItem generateCartItemWithPromotion(OrderItemDto orderItemDto, Store store) {
+        Product product = store.findProductsByProductNameAndPromotion(orderItemDto.productName());
+        if (product.isEligibleForPromotion(orderItemDto.quantity())) {
+            return createCartItemWithPromotion(orderItemDto, product);
+        }
+        return createCartItemForInsufficientStock(orderItemDto, store);
     }
 
-
-    private void validateProductExistence(List<OrderItemDto> orderItemDtos, Store store) {
-        for (OrderItemDto orderItemDto : orderItemDtos) {
-            if (!store.existsByProductName(orderItemDto.productName())) {
-                throw new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage());
-            }
-        }
+    private CartItem createCartItemForInsufficientStock(OrderItemDto orderItemDto, Store store) {
+        return new CartItem(store.findProductsByName(orderItemDto.productName()),
+                orderItemDto.quantity());
     }
 
-    private void validateProductQuantity(List<OrderItemDto> orderItemDtos, Store store) {
-        for (OrderItemDto orderItemDto : orderItemDtos) {
-            int totalQuantity = store.findTotalQuantityByProductName(orderItemDto.productName());
-            if (orderItemDto.quantity() > totalQuantity) {
-                throw new IllegalArgumentException(QUANTITY_EXCEEDS_STOCK.getMessage());
-            }
-        }
+    private CartItem createCartItemWithPromotion(OrderItemDto orderItemDto, Product product) {
+        List<Product> products = new ArrayList<>();
+        products.add(product);
+        return new CartItem(products, orderItemDto.quantity());
     }
 
 }

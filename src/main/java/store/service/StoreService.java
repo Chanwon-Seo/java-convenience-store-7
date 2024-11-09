@@ -42,44 +42,32 @@ public class StoreService {
         }
     }
 
-    private Cart setCart(List<CartItem> cartItems) {
+    private Cart setCart(List<CartItem> cartItem) {
         Cart cart = new Cart();
-        cartItems.forEach(cart::addItem);
+        cart.addItem(cartItem);
         return cart;
     }
 
     private void setAdditionalProduct(Cart cart, Store store) {
-        for (CartItem cartItem : cart.getOrderItems()) {
-            Product product = findProductWithPromotion(store, cartItem.getProductName());
-            Promotion promotion = product.getPromotion();
-            if (isEligibleForAdditionalProduct(cartItem, product, promotion)) {
-                offerAdditionalProduct(cartItem, promotion);
+        for (CartItem cartItem : cart.getAllItemsInCart()) {
+            Product product = store.findProductsByProductNameAndPromotion(cartItem.getProductName());
+            if (!product.isPromotionalProduct()) {
                 continue;
             }
-            if (cartItem.getQuantity() > product.getQuantity()) {
-                int totalQuantity = handleUnmetQuantity(cartItem, product, promotion);
-                handleUnmetQuantity(cartItem, totalQuantity);
+            Promotion promotion = product.getPromotion();
+            if (applyPromotionIfEligible(cartItem, product, promotion)) {
+                continue;
             }
+            handleInsufficientStock(cartItem, product, promotion);
         }
     }
 
-    private void handleUnmetQuantity(CartItem cartItem, int totalQuantity) {
-        outputView.askForUnmetPromotion(cartItem.getProductName(), totalQuantity);
-        if (!inputView.getYesOrNo()) {
-            cartItem.decreaseQuantity(totalQuantity);
+    private boolean applyPromotionIfEligible(CartItem cartItem, Product product, Promotion promotion) {
+        if (isEligibleForAdditionalProduct(cartItem, product, promotion)) {
+            offerAdditionalProduct(cartItem, promotion);
+            return true;
         }
-    }
-
-    private int handleUnmetQuantity(CartItem cartItem, Product product, Promotion promotion) {
-        int requiredQuantity = promotion.getBuy() + promotion.getGet();
-        int quantityDifference = cartItem.getQuantity() - product.getQuantity();
-        int quantityRemainder = product.getQuantity() % requiredQuantity;
-
-        return quantityRemainder + quantityDifference;
-    }
-
-    private Product findProductWithPromotion(Store store, String productName) {
-        return store.findProductsByProductNameAndPromotion(productName);
+        return false;
     }
 
     private boolean isEligibleForAdditionalProduct(CartItem cartItem, Product product, Promotion promotion) {
@@ -96,6 +84,28 @@ public class StoreService {
     private void updateOrderItemQuantityIfAccepted(CartItem cartItem, int additionalQuantity) {
         if (inputView.getYesOrNo()) {
             cartItem.increaseQuantity(additionalQuantity);
+        }
+    }
+
+    private void handleInsufficientStock(CartItem cartItem, Product product, Promotion promotion) {
+        if (cartItem.getQuantity() > product.getQuantity()) {
+            int totalQuantity = handleUnmetQuantity(cartItem, product, promotion);
+            handleUnmetQuantity(cartItem, totalQuantity);
+        }
+    }
+
+    private int handleUnmetQuantity(CartItem cartItem, Product product, Promotion promotion) {
+        int requiredQuantity = promotion.getBuy() + promotion.getGet();
+        int quantityDifference = cartItem.getQuantity() - product.getQuantity();
+        int quantityRemainder = product.getQuantity() % requiredQuantity;
+
+        return quantityRemainder + quantityDifference;
+    }
+
+    private void handleUnmetQuantity(CartItem cartItem, int totalQuantity) {
+        outputView.askForUnmetPromotion(cartItem.getProductName(), totalQuantity);
+        if (!inputView.getYesOrNo()) {
+            cartItem.decreaseQuantity(totalQuantity);
         }
     }
 

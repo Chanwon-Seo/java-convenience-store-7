@@ -4,13 +4,12 @@ import static store.constants.ProductConstants.OUT_OF_STOCK;
 import static store.constants.ProductConstants.PRODUCT_DESCRIPTION_PREFIX;
 import static store.constants.ProductConstants.UNIT_QUANTITY;
 import static store.constants.ProductConstants.UNIT_WON;
-import static store.message.ErrorMessage.*;
+import static store.message.ErrorMessage.NOT_FOUND_PROMOTION;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Optional;
 import store.dto.ProductDto;
-import store.message.ErrorMessage;
 import store.validation.ProductValidator;
 
 public class Product {
@@ -56,6 +55,16 @@ public class Product {
         return "";
     }
 
+    public boolean isEligibleForPromotion(int orderedQuantity) {
+        if (promotion.isPresent()) {
+            Promotion promotionInfo = promotion.get();
+            int remainingQuantityForPromotion = orderedQuantity % promotion.get().getTotalRequiredQuantity();
+            return orderedQuantity <= quantity
+                    && remainingQuantityForPromotion + promotionInfo.getGet() <= quantity;
+        }
+        return false;
+    }
+
     public String getFormattedWinnings(int number) {
         return NumberFormat.getInstance(Locale.KOREA).format(number);
     }
@@ -74,5 +83,9 @@ public class Product {
 
     public Promotion getPromotion() {
         return promotion.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PROMOTION.getMessage()));
+    }
+
+    public boolean isPromotionalProduct() {
+        return promotion.isPresent();
     }
 }

@@ -2,8 +2,8 @@ package store.domain;
 
 import java.time.LocalDateTime;
 import store.dto.PromotionDto;
-import store.validation.PromotionValidator;
 import store.util.DateUtil;
+import store.validation.PromotionValidator;
 
 public class Promotion {
 
@@ -31,6 +31,10 @@ public class Promotion {
 
     public String getName() {
         return name;
+    }
+
+    public int getTotalRequiredQuantity() {
+        return buy + get;
     }
 
     public int getBuy() {

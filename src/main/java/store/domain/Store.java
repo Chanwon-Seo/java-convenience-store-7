@@ -30,6 +30,10 @@ public class Store {
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage()));
     }
 
+    public List<Product> findProductsByName(String productName) {
+        return products.get(productName);
+    }
+
     public boolean existsByProductName(String productName) {
         List<Product> getProducts = products.get(productName);
         return getProducts != null;

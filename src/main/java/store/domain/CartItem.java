@@ -1,17 +1,28 @@
 package store.domain;
 
-import static store.validation.OrderItemValidator.validate;
-
 import java.util.List;
+import store.validation.CartItemValidator;
 
 public class CartItem {
-    private String productName;
+    private final List<Product> products;
     private int quantity;
 
-    public CartItem(String productName, int quantity) {
-        validate(quantity);
-        this.productName = productName;
+    public CartItem(List<Product> products, int quantity) {
+        CartItemValidator.validateCartItem(quantity);
+        this.products = products;
         this.quantity = quantity;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getProductName() {
+        return products.getFirst().getName();
     }
 
     public void increaseQuantity(int updateQuantity) {
@@ -20,13 +31,5 @@ public class CartItem {
 
     public void decreaseQuantity(int updateQuantity) {
         this.quantity -= updateQuantity;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public int getQuantity() {
-        return quantity;
     }
 }

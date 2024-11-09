@@ -1,6 +1,5 @@
 package store.controller;
 
-import store.domain.Cart;
 import store.domain.Store;
 import store.service.StoreService;
 
@@ -13,6 +12,6 @@ public class StoreController {
     }
 
     public void run(Store store) {
-        Cart cart = storeService.processOrder(store);
+        storeService.processOrder(store);
     }
 }

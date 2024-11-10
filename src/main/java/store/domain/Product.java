@@ -63,6 +63,12 @@ public class Product {
         return promotion.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PROMOTION.getMessage()));
     }
 
+    //프로모션 상품 수량을 제외한 남은 결과를 반환한다.
+    public int getRemainingQuantityNonPromotion(int cartItemQuantity) {
+        return calculateQuantityAfterPromotion(cartItemQuantity) -
+                getRemainingItemsForPromotion(cartItemQuantity, getPromotionOrElseThrow());
+    }
+
     @Override
     public String toString() {
         return PRODUCT_DESCRIPTION_PREFIX

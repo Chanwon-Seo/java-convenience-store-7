@@ -13,16 +13,16 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    public boolean isProductWithPromotion() {
+        return products.size() == 1;
+    }
+
     public Product getProductWithPromotion() {
         return products.getFirst();
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public int getQuantity() {
-        return quantity;
+    public Product getProductNonPromotion() {
+        return products.getFirst();
     }
 
     public String getProductName() {
@@ -40,4 +40,13 @@ public class CartItem {
     public void removeCartItem() {
         products.removeLast();
     }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
 }

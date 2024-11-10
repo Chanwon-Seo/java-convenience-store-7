@@ -3,6 +3,7 @@ package store.service;
 import java.util.List;
 import store.domain.Cart;
 import store.domain.CartItem;
+import store.domain.Order;
 import store.domain.Product;
 import store.domain.Store;
 import store.dto.CartItemDto;
@@ -30,7 +31,7 @@ public class StoreService {
         outputView.showStoreOverview(products);
         Cart cart = setOrderItem(store);
         setAdditionalProduct(cart, store);
-        totalOrder(store, cart);
+        Order order = totalOrder(cart);
     }
 
     private Cart setOrderItem(Store store) {
@@ -55,7 +56,8 @@ public class StoreService {
         promotionService.setAdditionalProduct(cart, store);
     }
 
-    private void totalOrder(Store store, Cart cart) {
-        orderService.totalOrder(store, cart);
+    private Order totalOrder(Cart cart) {
+        return orderService.totalOrder(cart);
     }
+
 }

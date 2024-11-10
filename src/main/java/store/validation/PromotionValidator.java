@@ -23,23 +23,23 @@ public abstract class PromotionValidator {
         validateDateOrder(promotionDto.startDate(), promotionDto.endDate());
     }
 
-    public static void validateEmptyField(String date) {
-        if (date.isBlank()) {
+    public static void validateEmptyField(String value) {
+        if (value == null || value.isBlank()) {
             throw new IllegalArgumentException(EMPTY_DATE.getMessage());
         }
     }
 
-    public static void validateNumericValue(String data) {
-        validateEmptyField(data);
-        for (int i = 0; i < data.length(); i++) {
-            if (!Character.isDigit(data.charAt(i))) {
+    public static void validateNumericValue(String value) {
+        validateEmptyField(value);
+        for (int i = 0; i < value.length(); i++) {
+            if (!Character.isDigit(value.charAt(i))) {
                 throw new IllegalArgumentException(NON_NUMERIC.getMessage());
             }
         }
     }
 
-    public static void validateDateFormat(String date) {
-        if (!DATE_FORMAT_PATTERN.matcher(date).matches()) {
+    public static void validateDateFormat(String value) {
+        if (!DATE_FORMAT_PATTERN.matcher(value).matches()) {
             throw new IllegalArgumentException(INVALID_DATE_FORMAT.getMessage());
         }
     }

@@ -63,7 +63,8 @@ public class Product {
         return promotion.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PROMOTION.getMessage()));
     }
 
-    public String getProductDescription() {
+    @Override
+    public String toString() {
         return PRODUCT_DESCRIPTION_PREFIX
                 + name + " "
                 + getFormatKoreanLocale(price) + UNIT_WON

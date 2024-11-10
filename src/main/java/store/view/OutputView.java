@@ -22,7 +22,7 @@ public class OutputView {
         System.out.println();
         StringBuilder sb = new StringBuilder();
         for (Product product : products) {
-            sb.append(product.getProductDescription()).append("\n");
+            sb.append(product.toString()).append("\n");
         }
         System.out.println(sb);
     }

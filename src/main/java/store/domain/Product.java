@@ -112,4 +112,8 @@ public class Product {
     public boolean isPromotionalProduct() {
         return promotion.isPresent();
     }
+
+    public void decreaseQuantity(int orderQuantity) {
+        this.quantity -= orderQuantity;
+    }
 }

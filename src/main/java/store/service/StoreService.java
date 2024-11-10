@@ -6,6 +6,7 @@ import store.domain.CartItem;
 import store.domain.Membership;
 import store.domain.Order;
 import store.domain.Product;
+import store.domain.Receipt;
 import store.domain.Store;
 import store.dto.CartItemDto;
 import store.parser.CartItemParser;
@@ -34,8 +35,10 @@ public class StoreService {
         outputView.showStoreOverview(products);
         Cart cart = setOrderItem(store);
         setAdditionalProduct(cart, store);
-        Order order = totalOrder(cart);
+        Order order = createOrder(cart);
         Membership membership = setMemberShip(order);
+        updateStoreInventory(store, order);
+        setReceipt(store, order, membership);
     }
 
     private Cart setOrderItem(Store store) {
@@ -60,7 +63,7 @@ public class StoreService {
         promotionService.setAdditionalProduct(cart, store);
     }
 
-    private Order totalOrder(Cart cart) {
+    private Order createOrder(Cart cart) {
         return orderService.totalOrder(cart);
     }
 
@@ -79,5 +82,14 @@ public class StoreService {
             return inputView.getYesOrNo();
         }
         return false;
+    }
+
+    private void setReceipt(Store store, Order order, Membership membership) {
+        Receipt receipt = new Receipt(order, membership);
+        outputView.displayReceipt(receipt);
+    }
+
+    public void updateStoreInventory(Store store, Order order) {
+        store.decreaseStockForOrder(order);
     }
 }

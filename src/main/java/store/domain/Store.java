@@ -26,10 +26,18 @@ public class Store {
     }
 
     public Product findProductsByProductNameAndPromotion(String productName) {
-        List<Product> productList = products.get(productName);
+        List<Product> productList = findProductsByName(productName);
         return productList.stream().findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage()));
     }
+
+    public Product findProductsByProductNameAndNonPromotion(String productName) {
+        return findProductsByName(productName).stream()
+                .filter(product -> product.getPromotion().isEmpty())
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage()));
+    }
+
 
     public List<Product> findProductsByName(String productName) {
         return products.get(productName);
@@ -46,13 +54,31 @@ public class Store {
         if (existsByProductName(productName)) {
             return 0;
         }
-        return products.get(productName).stream()
+        return findProductsByName(productName).stream()
                 .mapToInt(Product::getQuantity)
                 .sum();
     }
 
     public boolean existsByProductName(String productName) {
         return !products.containsKey(productName);
+    }
+
+    public void decreaseStockForOrder(Order order) {
+        decreasePromotionProductQuantity(order);
+        decreaseNonPromotionProductQuantity(order);
+    }
+    public void decreasePromotionProductQuantity(Order order) {
+        for (OrderItem orderItem : order.getOrderItemsWithPromotion()) {
+            Product storeProduct = findProductsByProductNameAndPromotion(orderItem.getProduct().getName());
+            storeProduct.decreaseQuantity(orderItem.getOrderQuantity());
+        }
+    }
+
+    public void decreaseNonPromotionProductQuantity(Order order) {
+        for (OrderItem orderItem : order.getOrderItemsNonPromotion()) {
+            Product nonProduct = findProductsByProductNameAndNonPromotion(orderItem.getProduct().getName());
+            nonProduct.decreaseQuantity(orderItem.getOrderQuantity());
+        }
     }
 
 }

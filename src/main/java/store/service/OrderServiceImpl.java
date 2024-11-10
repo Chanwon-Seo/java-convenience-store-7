@@ -34,19 +34,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void applySingleNonProduct(CartItem cartItem, Order order) {
-        order.addOrderItemsNonPromotion(new OrderItem(cartItem.getProductNonPromotion(), cartItem.getQuantity()));
+        OrderItem orderItem = new OrderItem(cartItem.getProductNonPromotion(), cartItem.getQuantity());
+        order.addOrderItemsSingleNonProduct(cartItem, orderItem);
+    }
+
+    private void applyProductWithPromotion(CartItem cartItem, Order order) {
+        OrderItem orderItem = new OrderItem(cartItem.getProductWithPromotion(), cartItem.getQuantity());
+        order.addOrderItemsWithPromotion(cartItem, orderItem);
     }
 
     private void applyProductNonPromotion(CartItem cartItem, Order order) {
         Product productWithPromotion = cartItem.getProductWithPromotion();
 
-        order.addOrderItemsWithPromotion(new OrderItem(cartItem.getProductWithPromotion(), cartItem.getQuantity()));
-        order.addOrderItemsNonPromotion(new OrderItem(cartItem.getProductNonPromotion(),
-                productWithPromotion.getRemainingQuantityNonPromotion(cartItem.getQuantity())));
+        OrderItem orderItemWithPromotion = new OrderItem(cartItem.getProductWithPromotion(), cartItem.getQuantity());
+        OrderItem orderItemNonPromotion = new OrderItem(cartItem.getProductNonPromotion(),
+                productWithPromotion.getRemainingQuantityNonPromotion(cartItem.getQuantity()));
+
+        order.addOrderItemsNonPromotion(cartItem, orderItemWithPromotion, orderItemNonPromotion);
     }
 
-    private void applyProductWithPromotion(CartItem cartItem, Order order) {
-        OrderItem orderItem = new OrderItem(cartItem.getProductWithPromotion(), cartItem.getQuantity());
-        order.addOrderItemsWithPromotion(orderItem);
-    }
 }

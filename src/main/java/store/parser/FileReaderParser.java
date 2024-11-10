@@ -42,7 +42,7 @@ public class FileReaderParser {
 
     public void validateDataLength(String[] split, int expectedLength) {
         if (split.length != expectedLength) {
-            throw new IllegalArgumentException(INVALID_DATA_FORMAT.getMessage());
+            throw new IllegalStateException(INVALID_DATA_FORMAT.getMessage());
         }
     }
 

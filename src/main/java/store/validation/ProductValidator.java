@@ -13,16 +13,16 @@ public abstract class ProductValidator {
         validateNumericValue(productDto.quantity());
     }
 
-    public static void validateEmptyField(String date) {
-        if (date.isBlank()) {
+    public static void validateEmptyField(String value) {
+        if (value.isBlank()) {
             throw new IllegalArgumentException(EMPTY_DATE.getMessage());
         }
     }
 
-    public static void validateNumericValue(String data) {
-        validateEmptyField(data);
-        for (int i = 0; i < data.length(); i++) {
-            if (!Character.isDigit(data.charAt(i))) {
+    public static void validateNumericValue(String value) {
+        validateEmptyField(value);
+        for (int i = 0; i < value.length(); i++) {
+            if (!Character.isDigit(value.charAt(i))) {
                 throw new IllegalArgumentException(NON_NUMERIC.getMessage());
             }
         }

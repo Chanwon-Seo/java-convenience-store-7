@@ -44,4 +44,12 @@ public class Promotion {
     public int getGet() {
         return get;
     }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
 }

@@ -52,14 +52,14 @@ public class Product {
     }
 
     public int calculateQuantityAfterPromotion(int cartQuantity) {
-        Promotion promotionInfo = getPromotion();
+        Promotion promotionInfo = getPromotionOrElseThrow();
         int requiredQuantity = promotionInfo.getTotalRequiredQuantity();
         int quantityDifference = cartQuantity - quantity;
         int quantityRemainder = quantity % requiredQuantity;
         return quantityRemainder + quantityDifference;
     }
 
-    public Promotion getPromotion() {
+    public Promotion getPromotionOrElseThrow() {
         return promotion.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PROMOTION.getMessage()));
     }
 

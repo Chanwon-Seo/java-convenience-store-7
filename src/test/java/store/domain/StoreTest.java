@@ -38,7 +38,7 @@ class StoreTest {
         assertEquals(product.getName(), expectedProducts.getName());
         assertEquals(product.getPrice(), expectedProducts.getPrice());
         assertEquals(product.getQuantity(), expectedProducts.getQuantity());
-        assertDoesNotThrow(product::getPromotion);
+        assertDoesNotThrow(product::getPromotionOrElseThrow);
     }
 
     @Test

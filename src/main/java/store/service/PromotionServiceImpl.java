@@ -24,7 +24,7 @@ public class PromotionServiceImpl implements PromotionService {
             if (!product.isPromotionalProduct()) {
                 continue;
             }
-            Promotion promotion = product.getPromotion();
+            Promotion promotion = product.getPromotionOrElseThrow();
             if (applyPromotionIfEligible(cartItem, product, promotion)) {
                 continue;
             }

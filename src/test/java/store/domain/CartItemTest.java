@@ -59,6 +59,6 @@ class CartItemTest {
 
         List<Product> cartItemProducts = cartItem.getProducts();
         assertEquals(cartItemProducts.size(), 1);
-        assertEquals(cartItemProducts.getFirst().getPromotion().getName(), expectedPromotionName);
+        assertEquals(cartItemProducts.getFirst().getPromotionOrElseThrow().getName(), expectedPromotionName);
     }
 }

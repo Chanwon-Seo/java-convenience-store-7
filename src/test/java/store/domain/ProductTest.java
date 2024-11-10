@@ -25,7 +25,7 @@ class ProductTest {
         assertEquals(product.getPrice(), expectedPrice);
         assertEquals(product.getQuantity(), expectedQuantity);
         assertThrows(IllegalArgumentException.class,
-                () -> product.getPromotion());
+                () -> product.getPromotionOrElseThrow());
     }
 
     @Test

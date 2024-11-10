@@ -25,15 +25,15 @@ public class ProductParser {
         return convertToProductsMap(productDtos, availablePromotions);
     }
 
-    public Map<String, List<Product>> convertToProductsMap(List<ProductDto> productDtos,
-                                                           List<Promotion> availablePromotions) {
+    private Map<String, List<Product>> convertToProductsMap(List<ProductDto> productDtos,
+                                                            List<Promotion> availablePromotions) {
         Map<String, List<ProductDto>> groupedProductDtos = groupProductDtosByName(productDtos);
         applyDefaultPromotionIfMissing(groupedProductDtos);
         return convertToProductEntities(groupedProductDtos, availablePromotions);
     }
 
-    public Map<String, List<Product>> convertToProductEntities(Map<String, List<ProductDto>> groupedProductDtos,
-                                                               List<Promotion> availablePromotions) {
+    private Map<String, List<Product>> convertToProductEntities(Map<String, List<ProductDto>> groupedProductDtos,
+                                                                List<Promotion> availablePromotions) {
         Map<String, List<Product>> productEntities = new LinkedHashMap<>();
         for (Map.Entry<String, List<ProductDto>> entry : groupedProductDtos.entrySet()) {
             String productName = entry.getKey();
@@ -53,22 +53,21 @@ public class ProductParser {
         return products;
     }
 
-    public Product createProductFromDto(ProductDto productDto, List<Promotion> availablePromotions) {
+    private Product createProductFromDto(ProductDto productDto, List<Promotion> availablePromotions) {
         Promotion promotion = promotionUtil.findMatchingPromotion(productDto.promotion(), availablePromotions);
         return new Product(productDto, Optional.ofNullable(promotion));
     }
 
-    public void applyDefaultPromotionIfMissing(Map<String, List<ProductDto>> groupedProductDtos) {
+    private void applyDefaultPromotionIfMissing(Map<String, List<ProductDto>> groupedProductDtos) {
         for (List<ProductDto> productDtos : groupedProductDtos.values()) {
             if (isSingleProductWithPromotion(productDtos)) {
-                productDtos.add(
-                        ProductDto.toGeneralProductDto(productDtos.getFirst()));
+                productDtos.add(ProductDto.toGeneralProductDto(productDtos.getFirst()));
             }
         }
     }
 
-    public boolean isSingleProductWithPromotion(List<ProductDto> productDtos) {
-        return productDtos.size() < 2 && productDtos.getFirst().promotion() != null;
+    private boolean isSingleProductWithPromotion(List<ProductDto> productDtos) {
+        return productDtos.size() == 1 && productDtos.getFirst().promotion() != null;
     }
 
     private Map<String, List<ProductDto>> groupProductDtosByName(List<ProductDto> productDtos) {
@@ -80,7 +79,7 @@ public class ProductParser {
         return groupedProductDtos;
     }
 
-    public void validate(List<ProductDto> productDtos) {
+    private void validate(List<ProductDto> productDtos) {
         if (productDtos.isEmpty()) {
             throw new IllegalArgumentException(EMPTY_DATA.getMessage());
         }

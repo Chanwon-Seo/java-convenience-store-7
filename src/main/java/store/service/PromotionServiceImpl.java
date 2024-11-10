@@ -28,7 +28,7 @@ public class PromotionServiceImpl implements PromotionService {
             if (applyPromotionIfEligible(cartItem, product, promotion)) {
                 continue;
             }
-            handleInsufficientStock(cartItem, product, promotion);
+            handleInsufficientStock(cartItem, product);
         }
     }
 
@@ -51,19 +51,11 @@ public class PromotionServiceImpl implements PromotionService {
         }
     }
 
-    private void handleInsufficientStock(CartItem cartItem, Product product, Promotion promotion) {
+    private void handleInsufficientStock(CartItem cartItem, Product product) {
         if (cartItem.getQuantity() > product.getQuantity()) {
-            int totalQuantity = handleUnmetQuantity(cartItem, product, promotion);
+            int totalQuantity = product.calculateQuantityAfterPromotion(cartItem.getQuantity());
             handleUnmetPromotion(cartItem, totalQuantity);
         }
-    }
-
-    private int handleUnmetQuantity(CartItem cartItem, Product product, Promotion promotion) {
-        int requiredQuantity = promotion.getTotalRequiredQuantity();
-        int quantityDifference = cartItem.getQuantity() - product.getQuantity();
-        int quantityRemainder = product.getQuantity() % requiredQuantity;
-
-        return quantityRemainder + quantityDifference;
     }
 
     private void handleUnmetPromotion(CartItem cartItem, int totalQuantity) {

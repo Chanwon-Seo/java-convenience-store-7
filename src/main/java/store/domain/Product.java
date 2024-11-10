@@ -29,25 +29,6 @@ public class Product {
         this.promotion = promotion;
     }
 
-    public String getProductDescription() {
-        return PRODUCT_DESCRIPTION_PREFIX
-                + name + " "
-                + getFormattedWinnings(price) + UNIT_WON
-                + getFormattedQuantity()
-                + getFormattedPromotion();
-    }
-
-    public String getFormattedQuantity() {
-        if (quantity < 1) {
-            return OUT_OF_STOCK;
-        }
-        return getFormattedWinnings(quantity) + UNIT_QUANTITY;
-    }
-
-    public String getFormattedPromotion() {
-        return promotion.map(Promotion::getName).orElse("");
-    }
-
     public boolean isEligibleForStandardPromotion(int orderedQuantity) {
         if (promotion.isEmpty()) {
             return false;
@@ -70,8 +51,39 @@ public class Product {
         return orderedQuantity % promotionInfo.getTotalRequiredQuantity();
     }
 
-    public String getFormattedWinnings(int number) {
+    public int calculateQuantityAfterPromotion(int cartQuantity) {
+        Promotion promotionInfo = getPromotion();
+        int requiredQuantity = promotionInfo.getTotalRequiredQuantity();
+        int quantityDifference = cartQuantity - quantity;
+        int quantityRemainder = quantity % requiredQuantity;
+        return quantityRemainder + quantityDifference;
+    }
+
+    public Promotion getPromotion() {
+        return promotion.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PROMOTION.getMessage()));
+    }
+
+    public String getProductDescription() {
+        return PRODUCT_DESCRIPTION_PREFIX
+                + name + " "
+                + getFormatKoreanLocale(price) + UNIT_WON
+                + getFormattedQuantity()
+                + getFormattedPromotion();
+    }
+
+    public String getFormattedQuantity() {
+        if (quantity < 1) {
+            return OUT_OF_STOCK;
+        }
+        return getFormatKoreanLocale(quantity) + UNIT_QUANTITY;
+    }
+
+    public String getFormatKoreanLocale(int number) {
         return NumberFormat.getInstance(Locale.KOREA).format(number);
+    }
+
+    public String getFormattedPromotion() {
+        return promotion.map(Promotion::getName).orElse("");
     }
 
     public String getName() {
@@ -84,10 +96,6 @@ public class Product {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public Promotion getPromotion() {
-        return promotion.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PROMOTION.getMessage()));
     }
 
     public boolean isPromotionalProduct() {

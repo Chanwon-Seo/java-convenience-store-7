@@ -47,5 +47,18 @@ class CartItemTest {
         cartItem.decreaseQuantity(4);
 
         assertEquals(cartItem.getQuantity(), expectedQuantity);
+     }
+
+    @Test
+    void 프로모션_미적용_상품_삭제_테스트() {
+        List<Product> products = store.findProductsByName("콜라");
+        String expectedPromotionName = "탄산2+1";
+
+        CartItem cartItem = new CartItem(products, 10);
+        cartItem.removeCartItem();
+
+        List<Product> cartItemProducts = cartItem.getProducts();
+        assertEquals(cartItemProducts.size(), 1);
+        assertEquals(cartItemProducts.getFirst().getPromotion().getName(), expectedPromotionName);
     }
 }

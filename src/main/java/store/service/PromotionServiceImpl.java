@@ -54,7 +54,7 @@ public class PromotionServiceImpl implements PromotionService {
     private void handleInsufficientStock(CartItem cartItem, Product product, Promotion promotion) {
         if (cartItem.getQuantity() > product.getQuantity()) {
             int totalQuantity = handleUnmetQuantity(cartItem, product, promotion);
-            handleUnmetQuantity(cartItem, totalQuantity);
+            handleUnmetPromotion(cartItem, totalQuantity);
         }
     }
 
@@ -66,7 +66,7 @@ public class PromotionServiceImpl implements PromotionService {
         return quantityRemainder + quantityDifference;
     }
 
-    private void handleUnmetQuantity(CartItem cartItem, int totalQuantity) {
+    private void handleUnmetPromotion(CartItem cartItem, int totalQuantity) {
         outputView.askForUnmetPromotion(cartItem.getProductName(), totalQuantity);
         if (!inputView.getYesOrNo()) {
             cartItem.decreaseQuantity(totalQuantity);

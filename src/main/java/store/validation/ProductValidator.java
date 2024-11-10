@@ -14,7 +14,7 @@ public abstract class ProductValidator {
     }
 
     public static void validateEmptyField(String value) {
-        if (value.isBlank()) {
+        if (value == null || value.isBlank()) {
             throw new IllegalArgumentException(EMPTY_DATE.getMessage());
         }
     }

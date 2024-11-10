@@ -21,9 +21,9 @@ public abstract class CartItemValidator {
         }
     }
 
-    public static void validateOrderItems(List<CartItemDto> cartItemDtos, Store products) {
-        validateProductExists(cartItemDtos, products);
-        validateProductStockQuantity(cartItemDtos, products);
+    public static void validateOrderItems(List<CartItemDto> cartItemDtos, Store store) {
+        validateProductExists(cartItemDtos, store);
+        validateProductStockQuantity(cartItemDtos, store);
     }
 
     private static void validateProductExists(List<CartItemDto> cartItemDtos, Store store) {

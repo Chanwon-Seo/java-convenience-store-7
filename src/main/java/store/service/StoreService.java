@@ -60,7 +60,7 @@ public class StoreService {
     }
 
     private void setAdditionalProduct(Cart cart, Store store) {
-        promotionService.setAdditionalProduct(cart, store);
+        promotionService.setFreeProductQuantity(cart, store);
     }
 
     private Order createOrder(Cart cart) {
@@ -86,7 +86,6 @@ public class StoreService {
 
     private void setReceipt(Store store, Order order, Membership membership) {
         Receipt receipt = new Receipt(order, membership);
-        outputView.displayReceipt(receipt);
     }
 
     public void updateStoreInventory(Store store, Order order) {

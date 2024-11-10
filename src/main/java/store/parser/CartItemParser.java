@@ -19,7 +19,7 @@ public class CartItemParser {
     }
 
     public CartItem generateCartItemWithPromotion(CartItemDto cartItemDto, Store store) {
-        Product product = store.findProductsByProductNameAndPromotion(cartItemDto.productName());
+        Product product = store.findByProductNameAndPromotion(cartItemDto.productName());
         if (product.isEligibleForStandardPromotion(cartItemDto.quantity())) {
             return createCartItemWithPromotion(cartItemDto, product);
         }

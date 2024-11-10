@@ -18,9 +18,9 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public void setAdditionalProduct(Cart cart, Store store) {
+    public void setFreeProductQuantity(Cart cart, Store store) {
         for (CartItem cartItem : cart.getAllItemsInCart()) {
-            Product product = store.findProductsByProductNameAndPromotion(cartItem.getProductName());
+            Product product = store.findByProductNameAndPromotion(cartItem.getProductName());
             if (!product.isPromotionalProduct()) {
                 continue;
             }

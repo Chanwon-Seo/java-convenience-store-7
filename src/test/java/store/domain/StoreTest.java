@@ -33,7 +33,7 @@ class StoreTest {
         Promotion promotion = new Promotion(new PromotionDto("탄산2+1", "2", "1", "2024-01-01", "2024-12-31"));
         Product expectedProducts = new Product(new ProductDto("콜라", "1000", "10", "탄산2+1"), Optional.of(promotion));
 
-        Product product = store.findProductsByProductNameAndPromotion(findProductName);
+        Product product = store.findByProductNameAndPromotion(findProductName);
 
         assertEquals(product.getName(), expectedProducts.getName());
         assertEquals(product.getPrice(), expectedProducts.getPrice());

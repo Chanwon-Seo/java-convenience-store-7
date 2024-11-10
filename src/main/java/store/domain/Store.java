@@ -25,9 +25,11 @@ public class Store {
         return flattenedProducts;
     }
 
-    public Product findProductsByProductNameAndPromotion(String productName) {
+    public Product findByProductNameAndPromotion(String productName) {
         List<Product> productList = findProductsByName(productName);
-        return productList.stream().findFirst()
+        return productList.stream()
+                .filter(product -> product.getPromotion().isPresent())
+                .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage()));
     }
 
@@ -37,7 +39,6 @@ public class Store {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage()));
     }
-
 
     public List<Product> findProductsByName(String productName) {
         return products.get(productName);
@@ -67,9 +68,10 @@ public class Store {
         decreasePromotionProductQuantity(order);
         decreaseNonPromotionProductQuantity(order);
     }
+
     public void decreasePromotionProductQuantity(Order order) {
         for (OrderItem orderItem : order.getOrderItemsWithPromotion()) {
-            Product storeProduct = findProductsByProductNameAndPromotion(orderItem.getProduct().getName());
+            Product storeProduct = findByProductNameAndPromotion(orderItem.getProduct().getName());
             storeProduct.decreaseQuantity(orderItem.getOrderQuantity());
         }
     }

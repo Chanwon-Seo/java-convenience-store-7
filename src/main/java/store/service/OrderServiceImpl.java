@@ -22,12 +22,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void addOrderItem(CartItem cartItem, Order order) {
+        if (cartItem.isProductWithPromotion() && cartItem.getProductNonPromotion().getPromotion().isEmpty()) {
+            applySingleNonProduct(cartItem, order);
+            return;
+        }
         if (cartItem.isProductWithPromotion()) {
             applyProductWithPromotion(cartItem, order);
             return;
         }
-
         applyProductNonPromotion(cartItem, order);
+    }
+
+    private void applySingleNonProduct(CartItem cartItem, Order order) {
+        order.addOrderItemsNonPromotion(new OrderItem(cartItem.getProductNonPromotion(), cartItem.getQuantity()));
     }
 
     private void applyProductNonPromotion(CartItem cartItem, Order order) {

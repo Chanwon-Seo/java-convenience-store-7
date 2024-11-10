@@ -7,6 +7,7 @@ import static store.message.OutputMessage.STORE_OVERVIEW_MESSAGE;
 
 import java.util.List;
 import store.domain.Product;
+import store.message.OutputMessage;
 
 public class OutputView {
     public void showStoreOverview(List<Product> products) {
@@ -39,5 +40,10 @@ public class OutputView {
     public void askForUnmetPromotion(String productName, int get) {
         System.out.println();
         System.out.printf(PROMOTION_CONDITION_NOT_MET_MESSAGE.getMessage(), productName, get);
+    }
+
+    public void askForMembershipDiscount() {
+        System.out.println();
+        System.out.println(OutputMessage.MEMBERSHIP_DISCOUNT_CONFIRMATION_MESSAGE.getMessage());
     }
 }

@@ -20,11 +20,13 @@ public class Order {
         orderItemsNonPromotion.add(orderItem);
     }
 
-    public List<OrderItem> getOrderItemsNonPromotion() {
-        return orderItemsNonPromotion;
+    public int totalPriceNonPromotion() {
+        return orderItemsNonPromotion.stream()
+                .mapToInt(orderItem -> orderItem.getProduct().getPrice() * orderItem.getOrderQuantity())
+                .sum();
     }
 
-    public List<OrderItem> getOrderItemsWithPromotion() {
-        return orderItemsWithPromotion;
+    public boolean isNoNonPromotionItems() {
+        return orderItemsNonPromotion.isEmpty();
     }
 }

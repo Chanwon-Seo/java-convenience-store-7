@@ -105,6 +105,10 @@ public class Product {
         return quantity;
     }
 
+    public Optional<Promotion> getPromotion() {
+        return promotion;
+    }
+
     public boolean isPromotionalProduct() {
         return promotion.isPresent();
     }

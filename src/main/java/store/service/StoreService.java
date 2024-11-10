@@ -3,6 +3,7 @@ package store.service;
 import java.util.List;
 import store.domain.Cart;
 import store.domain.CartItem;
+import store.domain.Membership;
 import store.domain.Order;
 import store.domain.Product;
 import store.domain.Store;
@@ -17,6 +18,7 @@ public class StoreService {
     private final CartItemParser cartItemParser;
     private final PromotionService promotionService;
     private final OrderService orderService;
+    private final MembershipService membershipService;
 
     public StoreService() {
         this.outputView = new OutputView();
@@ -24,6 +26,7 @@ public class StoreService {
         this.cartItemParser = new CartItemParser();
         this.promotionService = new PromotionServiceImpl();
         this.orderService = new OrderServiceImpl();
+        this.membershipService = new MembershipServiceImpl();
     }
 
     public void processOrder(Store store) {
@@ -32,6 +35,7 @@ public class StoreService {
         Cart cart = setOrderItem(store);
         setAdditionalProduct(cart, store);
         Order order = totalOrder(cart);
+        Membership membership = setMemberShip(order);
     }
 
     private Cart setOrderItem(Store store) {
@@ -60,4 +64,20 @@ public class StoreService {
         return orderService.totalOrder(cart);
     }
 
+    private Membership setMemberShip(Order order) {
+        Membership membership = new Membership();
+        if (checkMembershipDiscount(order)) {
+            return membershipService.setMembership(order, membership);
+        }
+        return membership;
+
+    }
+
+    private boolean checkMembershipDiscount(Order order) {
+        if (!order.isNoNonPromotionItems()) {
+            outputView.askForMembershipDiscount();
+            return inputView.getYesOrNo();
+        }
+        return false;
+    }
 }

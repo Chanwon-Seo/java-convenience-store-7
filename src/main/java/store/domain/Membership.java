@@ -1,7 +1,19 @@
 package store.domain;
 
-public class Membership {
+import static store.constants.MembershipConstants.DISCOUNT_RATE;
 
-    private Membership() {
+public class Membership {
+    private int membershipPrice;
+
+    public Membership() {
+        this.membershipPrice = 0;
+    }
+
+    public void calculateDiscountedPrice(int totalPrice) {
+        this.membershipPrice = (int) (totalPrice * DISCOUNT_RATE);
+    }
+
+    public int getMembershipPrice() {
+        return membershipPrice;
     }
 }

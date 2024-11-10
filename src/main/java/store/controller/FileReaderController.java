@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import store.domain.Product;
 import store.domain.Promotion;
-import store.domain.Store;
 import store.dto.StoreDto;
 import store.dto.StoreInitializationDto;
 import store.parser.ProductParser;
@@ -22,9 +21,8 @@ public class FileReaderController {
         this.promotionParser = new PromotionParser();
     }
 
-    public Store runFileData() {
-        StoreDto storeDto = initialize();
-        return createStore(storeDto);
+    public StoreDto runFileData() {
+        return initialize();
     }
 
     public StoreDto initialize() {
@@ -36,9 +34,5 @@ public class FileReaderController {
         List<Promotion> promotions = promotionParser.parse(storeInitializationDto.promotionDtos());
         Map<String, List<Product>> parse = productParser.parse(storeInitializationDto.productDtos(), promotions);
         return new StoreDto(parse, promotions);
-    }
-
-    private Store createStore(StoreDto storeDto) {
-        return new Store(storeDto);
     }
 }

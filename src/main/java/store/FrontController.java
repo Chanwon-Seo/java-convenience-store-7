@@ -3,6 +3,7 @@ package store;
 import store.controller.FileReaderController;
 import store.controller.StoreController;
 import store.domain.Store;
+import store.dto.StoreDto;
 
 public class FrontController {
     private final FileReaderController fileReaderController;
@@ -14,7 +15,7 @@ public class FrontController {
     }
 
     public void run() {
-        Store store = fileReaderController.runFileData();
-        storeController.run(store);
+        StoreDto storeDto = fileReaderController.runFileData();
+        storeController.run(storeDto);
     }
 }

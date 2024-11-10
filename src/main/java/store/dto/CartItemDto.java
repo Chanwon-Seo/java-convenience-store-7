@@ -1,6 +1,6 @@
 package store.dto;
 
-public record OrderItemDto(
+public record CartItemDto(
         String productName,
         int quantity
 ) {

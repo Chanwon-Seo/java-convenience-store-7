@@ -6,7 +6,7 @@ import static store.message.ErrorMessage.QUANTITY_EXCEEDS_STOCK;
 
 import java.util.List;
 import store.domain.Store;
-import store.dto.OrderItemDto;
+import store.dto.CartItemDto;
 
 public abstract class CartItemValidator {
     private static final int MINIMUM_QUANTITY = 0;
@@ -21,22 +21,22 @@ public abstract class CartItemValidator {
         }
     }
 
-    public static void validateOrderItems(List<OrderItemDto> orderItemDtos, Store products) {
-        validateProductExists(orderItemDtos, products);
-        validateProductStockQuantity(orderItemDtos, products);
+    public static void validateOrderItems(List<CartItemDto> cartItemDtos, Store products) {
+        validateProductExists(cartItemDtos, products);
+        validateProductStockQuantity(cartItemDtos, products);
     }
 
-    private static void validateProductExists(List<OrderItemDto> orderItemDtos, Store store) {
-        for (OrderItemDto orderItemDto : orderItemDtos) {
-            if (store.existsByProductName(orderItemDto.productName())) {
+    private static void validateProductExists(List<CartItemDto> cartItemDtos, Store store) {
+        for (CartItemDto cartItemDto : cartItemDtos) {
+            if (store.existsByProductName(cartItemDto.productName())) {
                 throw new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage());
             }
         }
     }
 
-    private static void validateProductStockQuantity(List<OrderItemDto> orderItemDtos, Store store) {
-        for (OrderItemDto orderItemDto : orderItemDtos) {
-            if (!store.isTotalQuantityByProductName(orderItemDto)) {
+    private static void validateProductStockQuantity(List<CartItemDto> cartItemDtos, Store store) {
+        for (CartItemDto cartItemDto : cartItemDtos) {
+            if (!store.isTotalQuantityByProductName(cartItemDto)) {
                 throw new IllegalArgumentException(QUANTITY_EXCEEDS_STOCK.getMessage());
             }
         }

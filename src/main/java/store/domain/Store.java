@@ -5,7 +5,7 @@ import static store.message.ErrorMessage.NOT_FOUND_PRODUCT;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import store.dto.OrderItemDto;
+import store.dto.CartItemDto;
 import store.dto.StoreDto;
 
 public class Store {
@@ -35,11 +35,11 @@ public class Store {
         return products.get(productName);
     }
 
-    public boolean isTotalQuantityByProductName(OrderItemDto orderItemDto) {
-        if (existsByProductName(orderItemDto.productName())) {
+    public boolean isTotalQuantityByProductName(CartItemDto cartItemDto) {
+        if (existsByProductName(cartItemDto.productName())) {
             return false;
         }
-        return orderItemDto.quantity() <= findTotalQuantityByProductName(orderItemDto.productName());
+        return cartItemDto.quantity() <= findTotalQuantityByProductName(cartItemDto.productName());
     }
 
     public int findTotalQuantityByProductName(String productName) {

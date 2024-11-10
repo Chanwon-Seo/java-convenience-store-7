@@ -11,28 +11,28 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import store.dto.OrderItemDto;
+import store.dto.CartItemDto;
 
 class InputParserTest {
     private final InputParser inputParser = new InputParser();
 
     @ParameterizedTest
     @MethodSource("provideOrderItems")
-    void 주문_수량_파싱_테스트(String input, List<OrderItemDto> expectedOrderItems) {
-        List<OrderItemDto> orderItemDtos = inputParser.parseOrderItems(input);
+    void 주문_수량_파싱_테스트(String input, List<CartItemDto> expectedOrderItems) {
+        List<CartItemDto> cartItemDtos = inputParser.parseOrderItems(input);
 
-        assertEquals(expectedOrderItems, orderItemDtos);
+        assertEquals(expectedOrderItems, cartItemDtos);
     }
 
     static Stream<Arguments> provideOrderItems() {
         return Stream.of(
                 Arguments.of(
                         "[물-1]",
-                        List.of(new OrderItemDto("물", 1))
+                        List.of(new CartItemDto("물", 1))
                 ),
                 Arguments.of(
                         "[콜라-1],[사이다-1]",
-                        List.of(new OrderItemDto("콜라", 1), new OrderItemDto("사이다", 1))
+                        List.of(new CartItemDto("콜라", 1), new CartItemDto("사이다", 1))
                 )
         );
     }

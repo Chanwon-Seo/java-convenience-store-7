@@ -4,7 +4,7 @@ import static store.message.ErrorMessage.INVALID_INPUT_FORMAT_ERROR;
 
 import java.util.ArrayList;
 import java.util.List;
-import store.dto.OrderItemDto;
+import store.dto.CartItemDto;
 
 public class InputParser {
     private static final String ITEM_SEPARATOR_REGEX = "],\\[";
@@ -22,14 +22,14 @@ public class InputParser {
     private static final char NO = 'N';
     private static final int YES_OR_NO_INPUT_LENGTH = 1;
 
-    public List<OrderItemDto> parseOrderItems(String input) {
+    public List<CartItemDto> parseOrderItems(String input) {
         validateOrderItems(input);
         String[] items = splitItems(input);
-        List<OrderItemDto> orderItemDtos = new ArrayList<>();
+        List<CartItemDto> cartItemDtos = new ArrayList<>();
         for (String item : items) {
-            orderItemDtos.add(convertToOrderItemDtos(item));
+            cartItemDtos.add(convertToOrderItemDtos(item));
         }
-        return orderItemDtos;
+        return cartItemDtos;
     }
 
     public boolean parseYesOrNo(String input) {
@@ -127,12 +127,12 @@ public class InputParser {
         }
     }
 
-    private OrderItemDto convertToOrderItemDtos(String item) {
+    private CartItemDto convertToOrderItemDtos(String item) {
         if (!item.matches(ITEM_FORMAT_REGEX)) {
             exception();
         }
         String[] itemParts = item.split(QUANTITY_SEPARATOR);
-        return new OrderItemDto(itemParts[0], Integer.parseInt(itemParts[1]));
+        return new CartItemDto(itemParts[0], Integer.parseInt(itemParts[1]));
     }
 
     private void exception() {

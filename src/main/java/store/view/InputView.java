@@ -2,7 +2,7 @@ package store.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import java.util.List;
-import store.dto.OrderItemDto;
+import store.dto.CartItemDto;
 import store.parser.InputParser;
 
 public class InputView {
@@ -12,7 +12,7 @@ public class InputView {
         this.inputParser = new InputParser();
     }
 
-    public List<OrderItemDto> getOrderItem() {
+    public List<CartItemDto> getOrderItem() {
         try {
             String input = Console.readLine();
             return inputParser.parseOrderItems(input);

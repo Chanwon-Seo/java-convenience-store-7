@@ -62,6 +62,7 @@ public class PromotionServiceImpl implements PromotionService {
         outputView.askForUnmetPromotion(cartItem.getProductName(), totalQuantity);
         if (!inputView.getYesOrNo()) {
             cartItem.decreaseQuantity(totalQuantity);
+            cartItem.removeCartItem();
         }
     }
 }

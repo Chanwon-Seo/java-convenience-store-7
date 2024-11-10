@@ -13,6 +13,10 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    public Product getProductWithPromotion() {
+        return products.getFirst();
+    }
+
     public List<Product> getProducts() {
         return products;
     }
@@ -31,5 +35,9 @@ public class CartItem {
 
     public void decreaseQuantity(int updateQuantity) {
         this.quantity -= updateQuantity;
+    }
+
+    public void removeCartItem() {
+        products.removeLast();
     }
 }

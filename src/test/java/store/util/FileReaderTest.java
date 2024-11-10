@@ -20,7 +20,7 @@ class FileReaderTest {
         List<String> lines = fileReader.readLinesFromFile(PRODUCTS_FILE);
 
         assertNotNull(lines);
-        assertEquals(lines.get(0), expectedContent);
+        assertEquals(lines.getFirst(), expectedContent);
     }
 
     @Test

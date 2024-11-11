@@ -24,7 +24,7 @@ public class Store {
     }
 
     public Product findByProductNameAndPromotionIsNotNullOrThrow(String productName) {
-        return Optional.ofNullable(products.get(productName + PROMOTION_SUFFIX))
+        return Optional.ofNullable(products.get(createPromotionKey(productName)))
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage()));
     }
 
@@ -37,14 +37,14 @@ public class Store {
     }
 
     public boolean isTotalQuantityByProductName(CartItemDto cartItemDto) {
-        if (!existsByProductName(cartItemDto.productName())) {
+        if (!hasPromotionOrNoPromotion(cartItemDto.productName())) {
             return false;
         }
         return cartItemDto.quantity() <= findTotalQuantityByProductName(cartItemDto.productName());
     }
 
     public int findTotalQuantityByProductName(String productName) {
-        if (!hasPromotionAndNoPromotion(productName)) {
+        if (!hasPromotionOrNoPromotion(productName)) {
             return 0;
         }
 
@@ -59,14 +59,14 @@ public class Store {
                 .toList();
     }
 
-    public boolean hasPromotionAndNoPromotion(String productName) {
-        return products.containsKey(createNoPromotionKey(productName)) &&
+    public boolean hasPromotionOrNoPromotion(String productName) {
+        return products.containsKey(createNoPromotionKey(productName)) ||
                 products.containsKey(createPromotionKey(productName));
     }
 
     public boolean existsByProductName(String productName) {
-        return products.containsKey(createNoPromotionKey(productName)) && products.containsKey(
-                createPromotionKey(productName));
+        return products.containsKey(createNoPromotionKey(productName)) ||
+                products.containsKey(createPromotionKey(productName));
     }
 
     public void decreaseStockForOrder(Order order) {

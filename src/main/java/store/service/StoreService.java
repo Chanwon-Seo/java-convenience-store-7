@@ -31,6 +31,9 @@ public class StoreService {
         this.receiptService = new ReceiptServiceImpl();
     }
 
+    /**
+     * 주문을 처리하는 메서드로 일련의 작업을 처리
+     */
     public void processOrder(Store store) {
         List<Product> products = store.findAll();
         outputView.showStoreOverview(products);
@@ -61,6 +64,11 @@ public class StoreService {
         return cart;
     }
 
+    /**
+     * 프로모션에 따라 추가 상품을 장바구니에 추가하고, 처리 실패 시 다시 시도
+     * <p>
+     * 추가로 정가 구매 가격을 차감하여 장바구니의 수량이 1이하라면 상품 선택부터 시작
+     */
     private Cart setAdditionalProduct(Cart cart, Store store) {
         boolean success = false;
         while (!success) {
@@ -75,19 +83,27 @@ public class StoreService {
         return cart;
     }
 
+    /**
+     * 장바구니에 있는 상품을 바탕으로 주문을 생성
+     */
     private Order createOrder(Cart cart, Store store) {
         return orderService.totalOrder(cart, store);
     }
 
+    /**
+     * 주문에 대해 멤버십 할인 여부를 확인하고, 해당 할인 적용
+     */
     private Membership setMemberShip(Order order) {
         Membership membership = new Membership();
         if (checkMembershipDiscount(order)) {
             return membershipService.setMembership(order, membership);
         }
         return membership;
-
     }
 
+    /**
+     * 주문에 멤버십 할인을 적용할지 여부를 확인
+     */
     private boolean checkMembershipDiscount(Order order) {
         if (!order.isNoNonPromotionItems()) {
             outputView.askForMembershipDiscount();
@@ -96,14 +112,23 @@ public class StoreService {
         return false;
     }
 
+    /**
+     * 영수증을 출력하는 메서드
+     */
     private void setReceipt(Store store, Order order, Cart cart, Membership membership) {
         receiptService.displayReceipt(store, order, cart, membership);
     }
 
+    /**
+     * 주문에 따른 재고를 업데이트하는 메서드
+     */
     public void updateStoreInventory(Store store, Order order) {
         store.decreaseStockForOrder(order);
     }
 
+    /**
+     * 사용자가 주문 후 계속 진행할지 여부를 묻고, 다시 주문을 처리할지 결정
+     */
     public void askForNextAction(Store store) {
         outputView.displayThankYouMessageForPurchase();
         if (inputView.getYesOrNo()) {

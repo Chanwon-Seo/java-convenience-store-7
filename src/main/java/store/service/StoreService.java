@@ -40,6 +40,7 @@ public class StoreService {
         Membership membership = setMemberShip(order);
         updateStoreInventory(store, order);
         setReceipt(store, order, cart, membership);
+        askForNextAction(store);
     }
 
     private Cart setOrderItem(Store store) {
@@ -101,5 +102,12 @@ public class StoreService {
 
     public void updateStoreInventory(Store store, Order order) {
         store.decreaseStockForOrder(order);
+    }
+
+    public void askForNextAction(Store store) {
+        outputView.displayThankYouMessageForPurchase();
+        if (inputView.getYesOrNo()) {
+            processOrder(store);
+        }
     }
 }

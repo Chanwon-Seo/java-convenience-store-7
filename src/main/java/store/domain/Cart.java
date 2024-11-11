@@ -20,4 +20,16 @@ public class Cart {
     public List<CartItem> getAllItemsInCart() {
         return cartItems.values().stream().toList();
     }
+
+    public int getTotalFreeItemQuantity() {
+        return cartItems.values().stream().mapToInt(CartItem::getFreeQuantity).sum();
+    }
+
+    public int getTotalFreeItemPrice() {
+        return cartItems.values().stream().mapToInt(CartItem::getTotalFreePrice).sum();
+    }
+
+    public int getTotalItemPrice() {
+        return cartItems.values().stream().mapToInt(CartItem::totalPrice).sum();
+    }
 }

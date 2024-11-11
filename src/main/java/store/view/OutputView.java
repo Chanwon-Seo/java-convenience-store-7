@@ -46,4 +46,13 @@ public class OutputView {
         System.out.println();
         System.out.println(OutputMessage.MEMBERSHIP_DISCOUNT_CONFIRMATION_MESSAGE.getMessage());
     }
+
+    public void displayThankYouMessageForPurchase() {
+        System.out.println();
+        System.out.println(OutputMessage.PRODUCT_PURCHASE_THANK_YOU_MESSAGE.getMessage());
+    }
+
+    public void displayReceipt(String receiptContent) {
+        System.out.println(receiptContent);
+    }
 }

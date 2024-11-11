@@ -30,6 +30,14 @@ public class CartItem {
         return product.getName();
     }
 
+    public int totalPrice() {
+        return product.getPrice() * getTotalQuantity();
+    }
+
+    public int getTotalFreePrice() {
+        return product.getPrice() * freeQuantity;
+    }
+
     public int getQuantity() {
         return quantity;
     }

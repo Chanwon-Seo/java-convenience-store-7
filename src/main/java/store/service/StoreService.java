@@ -34,7 +34,7 @@ public class StoreService {
         List<Product> products = store.findAll();
         outputView.showStoreOverview(products);
         Cart cart = setOrderItem(store);
-        setAdditionalProduct(cart, store);
+        cart = setAdditionalProduct(cart, store);
         Order order = createOrder(cart, store);
         Membership membership = setMemberShip(order);
         updateStoreInventory(store, order);
@@ -59,8 +59,18 @@ public class StoreService {
         return cart;
     }
 
-    private void setAdditionalProduct(Cart cart, Store store) {
-        promotionService.setFreeProductQuantity(cart, store);
+    private Cart setAdditionalProduct(Cart cart, Store store) {
+        boolean success = false;
+        while (!success) {
+            try {
+                promotionService.setFreeProductQuantity(cart, store);
+                success = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                cart = setOrderItem(store);
+            }
+        }
+        return cart;
     }
 
     private Order createOrder(Cart cart, Store store) {

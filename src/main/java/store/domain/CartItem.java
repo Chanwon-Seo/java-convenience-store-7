@@ -21,9 +21,9 @@ public class CartItem {
 
     public void decreaseQuantity(int updateQuantity) {
         this.quantity -= updateQuantity;
-//        if (quantity <= 0) {
-//            throw new IllegalArgumentException(INSUFFICIENT_STOCK_ERROR.getMessage());
-//        }
+        if (quantity <= 0) {
+            throw new IllegalArgumentException(INSUFFICIENT_STOCK_ERROR.getMessage());
+        }
     }
 
     public String getProductName() {

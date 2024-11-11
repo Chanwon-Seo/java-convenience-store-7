@@ -14,7 +14,7 @@ class CartItemTest {
     @BeforeEach
     void setUp() {
         store = TestDataUtil.createStore();
-        product = store.findProductsByName("콜라").getFirst();
+        product = store.findByProductNameAndPromotionIsNotNull("콜라");
     }
 
     @Test
@@ -60,6 +60,7 @@ class CartItemTest {
     @Test
     void 프로모션_미적용_상품_삭제_예외_테스트() {
         CartItem cartItem = new CartItem(product, 4);
+
         assertThrows(IllegalArgumentException.class,
                 () -> cartItem.decreaseQuantity(4));
     }

@@ -35,7 +35,7 @@ public class StoreService {
         outputView.showStoreOverview(products);
         Cart cart = setOrderItem(store);
         setAdditionalProduct(cart, store);
-        Order order = createOrder(cart);
+        Order order = createOrder(cart, store);
         Membership membership = setMemberShip(order);
         updateStoreInventory(store, order);
         setReceipt(store, order, membership);
@@ -63,8 +63,8 @@ public class StoreService {
         promotionService.setFreeProductQuantity(cart, store);
     }
 
-    private Order createOrder(Cart cart) {
-        return orderService.totalOrder(cart);
+    private Order createOrder(Cart cart, Store store) {
+        return orderService.totalOrder(cart, store);
     }
 
     private Membership setMemberShip(Order order) {

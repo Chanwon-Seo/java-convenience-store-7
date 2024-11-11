@@ -1,52 +1,44 @@
 package store.domain;
 
-import java.util.List;
+import static store.message.ErrorMessage.INSUFFICIENT_STOCK_ERROR;
+
 import store.validation.CartItemValidator;
 
 public class CartItem {
-    private final List<Product> products;
+    private final Product product;
     private int quantity;
+    private int freeQuantity;
 
-    public CartItem(List<Product> products, int quantity) {
+    public CartItem(Product product, int quantity) {
         CartItemValidator.validateCartItem(quantity);
-        this.products = products;
+        this.product = product;
         this.quantity = quantity;
     }
 
-    public boolean isProductWithPromotion() {
-        return products.size() == 1;
-    }
-
-    public Product getProductWithPromotion() {
-        return products.getFirst();
-    }
-
-    public Product getProductNonPromotion() {
-        return products.getFirst();
-    }
-
-    public String getProductName() {
-        return products.getFirst().getName();
-    }
-
     public void increaseQuantity(int updateQuantity) {
-        this.quantity += updateQuantity;
+        this.freeQuantity += updateQuantity;
     }
 
     public void decreaseQuantity(int updateQuantity) {
         this.quantity -= updateQuantity;
+//        if (quantity <= 0) {
+//            throw new IllegalArgumentException(INSUFFICIENT_STOCK_ERROR.getMessage());
+//        }
     }
 
-    public void removeCartItem() {
-        products.removeLast();
-    }
-
-    public List<Product> getProducts() {
-        return products;
+    public String getProductName() {
+        return product.getName();
     }
 
     public int getQuantity() {
         return quantity;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public int getFreeQuantity() {
+        return freeQuantity;
+    }
 }

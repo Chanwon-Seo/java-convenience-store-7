@@ -13,7 +13,7 @@ public class Cart {
 
     public void addItem(List<CartItem> cartItems) {
         for (CartItem cartItem : cartItems) {
-            this.cartItems.put(cartItem.getProductName(), cartItem);
+            this.cartItems.put(cartItem.getProduct().getName(), cartItem);
         }
     }
 

@@ -1,5 +1,6 @@
 package store.service;
 
+import java.util.Optional;
 import store.domain.Cart;
 import store.domain.CartItem;
 import store.domain.Product;
@@ -20,15 +21,15 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public void setFreeProductQuantity(Cart cart, Store store) {
         for (CartItem cartItem : cart.getAllItemsInCart()) {
-            Product product = store.findByProductNameAndPromotion(cartItem.getProductName());
-            if (!product.isPromotionalProduct()) {
+            Optional<Product> product = store.findByProductNameAndPromotionIsNotNull(cartItem.getProduct().getName());
+            if (product.isEmpty()) {
                 continue;
             }
-            Promotion promotion = product.getPromotionOrElseThrow();
-            if (applyPromotionIfEligible(cartItem, product, promotion)) {
+            Promotion promotion = product.get().getPromotionOrElseThrow();
+            if (applyPromotionIfEligible(cartItem, product.orElse(null), promotion)) {
                 continue;
             }
-            handleInsufficientStock(cartItem, product);
+            handleInsufficientStock(cartItem, product.orElse(null));
         }
     }
 
@@ -41,7 +42,7 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     private void offerAdditionalProduct(CartItem cartItem, Promotion promotion) {
-        outputView.askAdditionalProduct(cartItem.getProductName(), promotion.getGet());
+        outputView.askAdditionalProduct(cartItem.getProduct().getName(), promotion.getGet());
         updateOrderItemQuantityIfAccepted(cartItem, promotion.getGet());
     }
 
@@ -59,10 +60,9 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     private void handleUnmetPromotion(CartItem cartItem, int totalQuantity) {
-        outputView.askForUnmetPromotion(cartItem.getProductName(), totalQuantity);
+        outputView.askForUnmetPromotion(cartItem.getProduct().getName(), totalQuantity);
         if (!inputView.getYesOrNo()) {
             cartItem.decreaseQuantity(totalQuantity);
-            cartItem.removeCartItem();
         }
     }
 }

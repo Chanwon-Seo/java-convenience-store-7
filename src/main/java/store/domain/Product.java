@@ -51,12 +51,10 @@ public class Product {
         return orderedQuantity % promotionInfo.getTotalRequiredQuantity();
     }
 
-    public int calculateQuantityAfterPromotion(int cartQuantity) {
+    public int calculateQuantityAfterPromotion(int orderedQuantity) {
         Promotion promotionInfo = getPromotionOrElseThrow();
         int requiredQuantity = promotionInfo.getTotalRequiredQuantity();
-        int quantityDifference = cartQuantity - quantity;
-        int quantityRemainder = quantity % requiredQuantity;
-        return quantityRemainder + quantityDifference;
+        return (orderedQuantity - quantity) + (quantity % requiredQuantity);
     }
 
     public Promotion getPromotionOrElseThrow() {

@@ -2,7 +2,6 @@ package store.parser;
 
 import static store.validation.CartItemValidator.validateOrderItems;
 
-import java.util.ArrayList;
 import java.util.List;
 import store.domain.CartItem;
 import store.domain.Product;
@@ -19,22 +18,12 @@ public class CartItemParser {
     }
 
     public CartItem generateCartItemWithPromotion(CartItemDto cartItemDto, Store store) {
-        Product product = store.findByProductNameAndPromotion(cartItemDto.productName());
-        if (product.isEligibleForStandardPromotion(cartItemDto.quantity())) {
-            return createCartItemWithPromotion(cartItemDto, product);
-        }
-        return createCartItemForInsufficientStock(cartItemDto, store);
+        List<Product> products = store.findProductsByName(cartItemDto.productName());
+        return createCartItemWithPromotion(cartItemDto, products.getFirst());
     }
 
-    private CartItem createCartItemForInsufficientStock(CartItemDto cartItemDto, Store store) {
-        return new CartItem(store.findProductsByName(cartItemDto.productName()),
-                cartItemDto.quantity());
-    }
-
-    private CartItem createCartItemWithPromotion(CartItemDto cartItemDto, Product product) {
-        List<Product> products = new ArrayList<>();
-        products.add(product);
-        return new CartItem(products, cartItemDto.quantity());
+    private CartItem createCartItemWithPromotion(CartItemDto cartItem, Product product) {
+        return new CartItem(product, cartItem.quantity());
     }
 
 }

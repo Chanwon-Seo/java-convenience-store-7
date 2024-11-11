@@ -14,6 +14,7 @@ public enum ErrorMessage {
     NOT_FOUND_PRODUCT("존재하지 않는 상품입니다. 다시 입력해 주세요."),
     QUANTITY_BELOW_MINIMUM("주문수량이 1이상이어야 합니다."),
     QUANTITY_EXCEEDS_STOCK("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요."),
+    INSUFFICIENT_STOCK_ERROR("구매할 수량이 없어 다시 선택합니다."),
     ;
 
     private final String prefix = "[ERROR] ";

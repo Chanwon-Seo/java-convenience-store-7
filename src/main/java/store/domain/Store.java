@@ -3,14 +3,17 @@ package store.domain;
 import static store.message.ErrorMessage.NOT_FOUND_PRODUCT;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import store.dto.CartItemDto;
 import store.dto.StoreDto;
 
 public class Store {
     private final Map<String, List<Product>> products;
     private final List<Promotion> promotions;
+    private Map<String, String> map = new HashMap<>();
 
     public Store(StoreDto storeDto) {
         this.products = storeDto.products();
@@ -25,7 +28,15 @@ public class Store {
         return flattenedProducts;
     }
 
-    public Product findByProductNameAndPromotion(String productName) {
+
+    public Optional<Product> findByProductNameAndPromotionIsNotNull(String productName) {
+        List<Product> productList = findProductsByName(productName);
+        return productList.stream()
+                .filter(product -> product.getPromotion().isPresent())
+                .findFirst();
+    }
+
+    public Product findByProductNameAndPromotionIsNotNullOrThrow(String productName) {
         List<Product> productList = findProductsByName(productName);
         return productList.stream()
                 .filter(product -> product.getPromotion().isPresent())
@@ -33,7 +44,7 @@ public class Store {
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage()));
     }
 
-    public Product findProductsByProductNameAndNonPromotion(String productName) {
+    public Product findByProductNameAndPromotionIsNull(String productName) {
         return findProductsByName(productName).stream()
                 .filter(product -> product.getPromotion().isEmpty())
                 .findFirst()
@@ -71,14 +82,14 @@ public class Store {
 
     public void decreasePromotionProductQuantity(Order order) {
         for (OrderItem orderItem : order.getOrderItemsWithPromotion()) {
-            Product storeProduct = findByProductNameAndPromotion(orderItem.getProduct().getName());
+            Product storeProduct = findByProductNameAndPromotionIsNotNullOrThrow(orderItem.getProduct().getName());
             storeProduct.decreaseQuantity(orderItem.getOrderQuantity());
         }
     }
 
     public void decreaseNonPromotionProductQuantity(Order order) {
         for (OrderItem orderItem : order.getOrderItemsNonPromotion()) {
-            Product nonProduct = findProductsByProductNameAndNonPromotion(orderItem.getProduct().getName());
+            Product nonProduct = findByProductNameAndPromotionIsNull(orderItem.getProduct().getName());
             nonProduct.decreaseQuantity(orderItem.getOrderQuantity());
         }
     }

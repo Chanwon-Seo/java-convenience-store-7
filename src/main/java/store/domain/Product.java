@@ -51,6 +51,10 @@ public class Product {
         return orderedQuantity % promotionInfo.getTotalRequiredQuantity();
     }
 
+    public int calculateBonusQuantity(int orderedQuantity, Promotion promotion) {
+        return (orderedQuantity / promotion.getTotalRequiredQuantity()) * promotion.getGet();
+    }
+
     public int calculateQuantityAfterPromotion(int orderedQuantity) {
         Promotion promotionInfo = getPromotionOrElseThrow();
         int requiredQuantity = promotionInfo.getTotalRequiredQuantity();
@@ -59,12 +63,6 @@ public class Product {
 
     public Promotion getPromotionOrElseThrow() {
         return promotion.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PROMOTION.getMessage()));
-    }
-
-    //프로모션 상품 수량을 제외한 남은 결과를 반환한다.
-    public int getRemainingQuantityNonPromotion(int cartItemQuantity) {
-        return calculateQuantityAfterPromotion(cartItemQuantity) -
-                getRemainingItemsForPromotion(cartItemQuantity, getPromotionOrElseThrow());
     }
 
     @Override

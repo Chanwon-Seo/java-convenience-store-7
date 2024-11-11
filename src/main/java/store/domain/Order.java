@@ -20,12 +20,6 @@ public class Order {
         orderItemsWithPromotion.add(orderItem);
     }
 
-    public void addOrderItemsNonPromotion(OrderItem orderItemWithPromotion,
-                                          OrderItem orderItemNonPromotion) {
-        orderItemsWithPromotion.add(orderItemWithPromotion);
-        orderItemsNonPromotion.add(orderItemNonPromotion);
-    }
-
     public int totalPriceNonPromotion() {
         return orderItemsNonPromotion.stream()
                 .mapToInt(orderItem -> orderItem.getProduct().getPrice() * orderItem.getOrderQuantity())

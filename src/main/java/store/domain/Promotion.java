@@ -7,9 +7,9 @@ import store.validation.PromotionValidator;
 
 public class Promotion {
 
-    private String name;
-    private int buy;
-    private int get;
+    private String name; //프로모션명
+    private int buy; // 구매조건
+    private int get; //증정수량
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 

@@ -29,6 +29,9 @@ public class Product {
         this.promotion = promotion;
     }
 
+    /**
+     * 프로모션을 적용 여부 검증
+     */
     public boolean isEligibleForStandardPromotion(int orderedQuantity) {
         if (promotion.isEmpty()) {
             return false;
@@ -38,6 +41,9 @@ public class Product {
                 && getRemainingItemsForPromotion(orderedQuantity, promotionInfo) + promotionInfo.getGet() <= quantity;
     }
 
+    /**
+     * 보너스 상품이 적용 여부 검증
+     */
     public boolean isEligibleForBonusProduct(int orderedQuantity) {
         if (promotion.isEmpty()) {
             return false;
@@ -47,24 +53,39 @@ public class Product {
                 && orderedQuantity + promotionInfo.getGet() <= quantity;
     }
 
+    /**
+     * 프로모션 조건을 만족하는 남은 수량을 계산
+     */
     public int getRemainingItemsForPromotion(int orderedQuantity, Promotion promotionInfo) {
         return orderedQuantity % promotionInfo.getTotalRequiredQuantity();
     }
 
+    /**
+     * 보너스 상품의 수량을 계산
+     */
     public int calculateBonusQuantity(int orderedQuantity, Promotion promotion) {
         return (orderedQuantity / promotion.getTotalRequiredQuantity()) * promotion.getGet();
     }
 
+    /**
+     * 프로모션이 적용된 후, 실제 주문 가능한 수량을 계산
+     */
     public int calculateQuantityAfterPromotion(int orderedQuantity) {
         Promotion promotionInfo = getPromotionOrElseThrow();
         int requiredQuantity = promotionInfo.getTotalRequiredQuantity();
         return (orderedQuantity - quantity) + (quantity % requiredQuantity);
     }
 
+    /**
+     * 프로모션이 존재하지 않으면 예외 발생
+     */
     public Promotion getPromotionOrElseThrow() {
         return promotion.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_PROMOTION.getMessage()));
     }
 
+    /**
+     * 값을 가지고 있는 주체이기 때문에 상품 리스트를 포맷을 합니다.
+     */
     @Override
     public String toString() {
         return PRODUCT_DESCRIPTION_PREFIX

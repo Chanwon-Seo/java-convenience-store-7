@@ -42,7 +42,7 @@ public class StoreService {
         Order order = createOrder(cart, store);
         Membership membership = setMemberShip(order);
         updateStoreInventory(store, order);
-        setReceipt(store, order, cart, membership);
+        setReceipt(store, cart, membership);
         askForNextAction(store);
     }
 
@@ -115,8 +115,8 @@ public class StoreService {
     /**
      * 영수증을 출력하는 메서드
      */
-    private void setReceipt(Store store, Order order, Cart cart, Membership membership) {
-        receiptService.displayReceipt(store, order, cart, membership);
+    private void setReceipt(Store store, Cart cart, Membership membership) {
+        receiptService.displayReceipt(store, cart, membership);
     }
 
     /**

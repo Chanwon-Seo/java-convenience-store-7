@@ -6,5 +6,5 @@ import store.domain.Order;
 import store.domain.Store;
 
 public interface ReceiptService {
-    void displayReceipt(Store store, Order order, Cart cart, Membership membership);
+    void displayReceipt(Store store, Cart cart, Membership membership);
 }

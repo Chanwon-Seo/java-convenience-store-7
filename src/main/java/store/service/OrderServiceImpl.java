@@ -36,19 +36,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void applyProductWithPromotion(CartItem cartItem, Order order, Store store) {
-        List<Product> products = store.findByProductName(cartItem.getProductName());
-        int remainingQuantity = cartItem.getTotalQuantity();
-
-        for (Product product : products) {
-            if (remainingQuantity <= 0) {
-                break;
-            }
-            int quantityToAdd = Math.min(remainingQuantity, product.getQuantity());
-            order.addOrderItemsWithPromotion(new OrderItem(product, quantityToAdd));
-            remainingQuantity -= quantityToAdd;
+        List<Product> findProduct = store.findByProductName(cartItem.getProductName());
+        if (applyPromotionalProduct(cartItem, order, findProduct)) {
+            return;
         }
+        applyMixedProduct(cartItem, order, findProduct);
     }
 
+    private boolean applyPromotionalProduct(CartItem cartItem, Order order, List<Product> findProduct) {
+        if (findProduct.getFirst().getQuantity() >= cartItem.getQuantity()) {
+            order.addOrderItemsWithPromotion(new OrderItem(findProduct.getFirst(), cartItem.getQuantity()));
+            return true;
+        }
+        return false;
+    }
+
+    private void applyMixedProduct(CartItem cartItem, Order order, List<Product> findProduct) {
+        int cartItemQuantity = cartItem.getQuantity();
+
+        Product promotionProduct = findProduct.getFirst();
+        OrderItem orderItem = new OrderItem(promotionProduct, promotionProduct.getQuantity());
+        OrderItem orderItem1 = new OrderItem(findProduct.getLast(),
+                cartItemQuantity - promotionProduct.getQuantity());
+        order.addOrderItemsWithPromotion(orderItem);
+        order.addOrderItemsSingleProduct(orderItem1);
+    }
 
     private OrderItem createOrderItem(CartItem cartItem) {
         return new OrderItem(cartItem.getProduct(), cartItem.getQuantity());

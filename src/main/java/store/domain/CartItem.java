@@ -34,6 +34,10 @@ public class CartItem {
         return quantity;
     }
 
+    public int getTotalQuantity() {
+        return quantity + freeQuantity;
+    }
+
     public Product getProduct() {
         return product;
     }

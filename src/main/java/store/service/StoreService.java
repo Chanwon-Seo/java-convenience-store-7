@@ -6,7 +6,6 @@ import store.domain.CartItem;
 import store.domain.Membership;
 import store.domain.Order;
 import store.domain.Product;
-import store.domain.Receipt;
 import store.domain.Store;
 import store.dto.CartItemDto;
 import store.parser.CartItemParser;
@@ -20,6 +19,7 @@ public class StoreService {
     private final PromotionService promotionService;
     private final OrderService orderService;
     private final MembershipService membershipService;
+    private final ReceiptService receiptService;
 
     public StoreService() {
         this.outputView = new OutputView();
@@ -28,6 +28,7 @@ public class StoreService {
         this.promotionService = new PromotionServiceImpl();
         this.orderService = new OrderServiceImpl();
         this.membershipService = new MembershipServiceImpl();
+        this.receiptService = new ReceiptServiceImpl();
     }
 
     public void processOrder(Store store) {
@@ -38,7 +39,7 @@ public class StoreService {
         Order order = createOrder(cart, store);
         Membership membership = setMemberShip(order);
         updateStoreInventory(store, order);
-        setReceipt(store, order, membership);
+        setReceipt(store, order, cart, membership);
     }
 
     private Cart setOrderItem(Store store) {
@@ -94,8 +95,8 @@ public class StoreService {
         return false;
     }
 
-    private void setReceipt(Store store, Order order, Membership membership) {
-        Receipt receipt = new Receipt(order, membership);
+    private void setReceipt(Store store, Order order, Cart cart, Membership membership) {
+        receiptService.displayReceipt(store, order, cart, membership);
     }
 
     public void updateStoreInventory(Store store, Order order) {

@@ -1,5 +1,6 @@
 package store.service;
 
+import java.util.List;
 import store.domain.Cart;
 import store.domain.CartItem;
 import store.domain.Order;
@@ -23,34 +24,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void addOrderItem(CartItem cartItem, Order order, Store store) {
-        if (!cartItem.getProduct().isPromotionalProduct()) {
-            applySingleNonProduct(cartItem, order);
+        if (store.isSingleProduct(cartItem.getProductName())) {
+            applyProductNonPromotion(cartItem, order);
             return;
         }
-        if (cartItem.getProduct().isEligibleForStandardPromotion(cartItem.getQuantity())) {
-            applyProductWithPromotion(cartItem, order);
-            return;
+        applyProductWithPromotion(cartItem, order, store);
+    }
+
+    private void applyProductNonPromotion(CartItem cartItem, Order order) {
+        order.addOrderItemsSingleProduct(createOrderItem(cartItem));
+    }
+
+    private void applyProductWithPromotion(CartItem cartItem, Order order, Store store) {
+        List<Product> products = store.findByProductName(cartItem.getProductName());
+        int remainingQuantity = cartItem.getTotalQuantity();
+
+        for (Product product : products) {
+            if (remainingQuantity <= 0) {
+                break;
+            }
+            int quantityToAdd = Math.min(remainingQuantity, product.getQuantity());
+            order.addOrderItemsWithPromotion(new OrderItem(product, quantityToAdd));
+            remainingQuantity -= quantityToAdd;
         }
-        applyProductNonPromotion(cartItem, order, store);
     }
 
-    private void applySingleNonProduct(CartItem cartItem, Order order) {
-        order.addOrderItemsSingleNonProduct(createOrderItem(cartItem));
-    }
-
-    private void applyProductWithPromotion(CartItem cartItem, Order order) {
-        order.addOrderItemsWithPromotion(createOrderItem(cartItem));
-    }
-
-    private void applyProductNonPromotion(CartItem cartItem, Order order, Store store) {
-        Product productWithPromotion = cartItem.getProduct();
-        Product productNameAndPromotionIsNull = store.findByProductNameAndPromotionIsNull(cartItem.getProductName());
-        OrderItem orderItemWithPromotion = createOrderItem(cartItem);
-        OrderItem orderItemNonPromotion = new OrderItem(productNameAndPromotionIsNull,
-                productWithPromotion.getRemainingQuantityNonPromotion(cartItem.getQuantity()));
-
-        order.addOrderItemsNonPromotion(orderItemWithPromotion, orderItemNonPromotion);
-    }
 
     private OrderItem createOrderItem(CartItem cartItem) {
         return new OrderItem(cartItem.getProduct(), cartItem.getQuantity());

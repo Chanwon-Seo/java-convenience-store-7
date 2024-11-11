@@ -54,7 +54,8 @@ public class Store {
     }
 
     public List<Product> findByProductName(String productName) {
-        return Stream.of(createNoPromotionKey(productName), createPromotionKey(productName)).map(products::get)
+        return Stream.of(createPromotionKey(productName), createNoPromotionKey(productName))
+                .map(products::get)
                 .filter(Objects::nonNull)
                 .toList();
     }
@@ -88,6 +89,19 @@ public class Store {
         }
     }
 
+    /**
+     * 일반 상품인 경우
+     */
+    public boolean isSingleProduct(String productName) {
+        return products.containsKey(createNoPromotionKey(productName)) &&
+                !products.containsKey(createPromotionKey(productName));
+    }
+
+    public boolean isProductWithPromotion(String productName) {
+        return products.containsKey(createNoPromotionKey(productName)) &&
+                products.containsKey(createPromotionKey(productName));
+    }
+
     public String createNoPromotionKey(String productName) {
         return productName + NO_PROMOTION_SUFFIX;
     }
@@ -95,5 +109,4 @@ public class Store {
     public String createPromotionKey(String productName) {
         return productName + PROMOTION_SUFFIX;
     }
-
 }

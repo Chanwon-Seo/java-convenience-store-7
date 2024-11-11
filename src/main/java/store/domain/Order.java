@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    private List<OrderItem> orderItemsWithPromotion;
-    private List<OrderItem> orderItemsNonPromotion;
+    private List<OrderItem> orderItemsWithPromotion; // 프로모션 상품
+    private List<OrderItem> orderItemsNonPromotion; // 일반 상품
 
     public Order() {
         this.orderItemsNonPromotion = new ArrayList<>();
         this.orderItemsWithPromotion = new ArrayList<>();
     }
 
-    public void addOrderItemsSingleNonProduct(OrderItem orderItem) {
+    public void addOrderItemsSingleProduct(OrderItem orderItem) {
         orderItemsNonPromotion.add(orderItem);
     }
 

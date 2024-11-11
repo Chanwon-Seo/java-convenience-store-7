@@ -45,6 +45,13 @@ class InputParserTest {
     }
 
     @Test
+    void 중복된_상품명_입력_테스트() {
+        String input = "[콜라-2],[콜라-3]";
+        assertThrows(IllegalArgumentException.class,
+                () -> inputParser.parseOrderItems(input));
+    }
+
+    @Test
     void 사용자_입력이_Y인_경우_테스트() {
         String input = "Y";
 

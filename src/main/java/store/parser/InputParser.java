@@ -3,7 +3,9 @@ package store.parser;
 import static store.message.ErrorMessage.INVALID_INPUT_FORMAT_ERROR;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import store.dto.CartItemDto;
 
 public class InputParser {
@@ -29,6 +31,7 @@ public class InputParser {
         for (String item : items) {
             cartItemDtos.add(convertToOrderItemDtos(item));
         }
+        validateDuplicateItemName(cartItemDtos);
         return cartItemDtos;
     }
 
@@ -52,6 +55,15 @@ public class InputParser {
     private void validateUppercase(String input) {
         if (!Character.isUpperCase(input.charAt(0))) {
             exception();
+        }
+    }
+
+    private void validateDuplicateItemName(List<CartItemDto> cartItemDtos) {
+        Set<String> productNames = new HashSet<>();
+        for (CartItemDto cartItemDto : cartItemDtos) {
+            if (!productNames.add(cartItemDto.productName())) {
+                exception();
+            }
         }
     }
 

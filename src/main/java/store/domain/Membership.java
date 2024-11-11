@@ -10,7 +10,8 @@ public class Membership {
     }
 
     public void calculateDiscountedPrice(int totalPrice) {
-        this.membershipPrice = (int) (totalPrice * DISCOUNT_RATE);
+        int discount = (int) (totalPrice * DISCOUNT_RATE);
+        this.membershipPrice = Math.min(discount, 8000);
     }
 
     public int getMembershipPrice() {

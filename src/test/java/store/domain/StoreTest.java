@@ -1,6 +1,9 @@
 package store.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,15 +52,16 @@ class StoreTest {
                 new Product(new ProductDto("콜라", "1000", "10", "탄산2+1"), Optional.of(promotion)),
                 new Product(new ProductDto("콜라", "1000", "10", "탄산2+1"), Optional.empty()));
 
-        List<Product> products = store.findProductsByName(findProductName);
+        Product product = store.findByProductNameAndPromotionIsNotNull(findProductName);
 
-        assertEquals(products.size(), expectedProducts.size());
-        assertEquals(products.getFirst().getName(), expectedProducts.getFirst().getName());
+        assertEquals(2, expectedProducts.size());
+        assertEquals(product.getName(), expectedProducts.getFirst().getName());
     }
 
     @Test
     void 최대_구매가능_수량_테스트() {
         CartItemDto cartItemDto = new CartItemDto("콜라", 10);
+
         boolean totalQuantityByProductName = store.isTotalQuantityByProductName(cartItemDto);
 
         assertTrue(totalQuantityByProductName);

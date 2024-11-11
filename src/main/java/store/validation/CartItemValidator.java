@@ -28,7 +28,7 @@ public abstract class CartItemValidator {
 
     private static void validateProductExists(List<CartItemDto> cartItemDtos, Store store) {
         for (CartItemDto cartItemDto : cartItemDtos) {
-            if (store.existsByProductName(cartItemDto.productName())) {
+            if (!store.existsByProductName(cartItemDto.productName())) {
                 throw new IllegalArgumentException(NOT_FOUND_PRODUCT.getMessage());
             }
         }

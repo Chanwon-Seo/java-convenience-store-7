@@ -6,7 +6,7 @@ import store.domain.Product;
 import store.domain.Promotion;
 
 public record StoreDto(
-        Map<String, List<Product>> products,
+        Map<String, Product> products,
         List<Promotion> promotions
 ) {
 }

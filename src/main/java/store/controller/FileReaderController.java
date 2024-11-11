@@ -32,7 +32,7 @@ public class FileReaderController {
 
     public StoreDto parseStoreData(StoreInitializationDto storeInitializationDto) {
         List<Promotion> promotions = promotionParser.parse(storeInitializationDto.promotionDtos());
-        Map<String, List<Product>> parse = productParser.parse(storeInitializationDto.productDtos(), promotions);
-        return new StoreDto(parse, promotions);
+        Map<String, Product> products = productParser.parse(storeInitializationDto.productDtos(), promotions);
+        return new StoreDto(products, promotions);
     }
 }

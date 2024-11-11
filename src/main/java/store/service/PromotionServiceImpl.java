@@ -1,11 +1,11 @@
 package store.service;
 
-import java.util.Optional;
 import store.domain.Cart;
 import store.domain.CartItem;
 import store.domain.Product;
 import store.domain.Promotion;
 import store.domain.Store;
+import store.message.ErrorMessage;
 import store.view.InputView;
 import store.view.OutputView;
 
@@ -21,15 +21,13 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public void setFreeProductQuantity(Cart cart, Store store) {
         for (CartItem cartItem : cart.getAllItemsInCart()) {
-            Optional<Product> product = store.findByProductNameAndPromotionIsNotNull(cartItem.getProduct().getName());
-            if (product.isEmpty()) {
+            Product product = store.findByProductNameAndPromotionIsNotNull(cartItem.getProduct().getName());
+            Promotion promotion = product.getPromotion()
+                    .orElseThrow(() -> new IllegalStateException(ErrorMessage.NOT_FOUND_PROMOTION.getMessage()));
+            if (applyPromotionIfEligible(cartItem, product, promotion)) {
                 continue;
             }
-            Promotion promotion = product.get().getPromotionOrElseThrow();
-            if (applyPromotionIfEligible(cartItem, product.orElse(null), promotion)) {
-                continue;
-            }
-            handleInsufficientStock(cartItem, product.orElse(null));
+            handleInsufficientStock(cartItem, product);
         }
     }
 

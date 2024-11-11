@@ -18,8 +18,8 @@ public class CartItemParser {
     }
 
     public CartItem generateCartItemWithPromotion(CartItemDto cartItemDto, Store store) {
-        List<Product> products = store.findProductsByName(cartItemDto.productName());
-        return createCartItemWithPromotion(cartItemDto, products.getFirst());
+        Product product = store.findByProductNameAndPromotionIsNotNull(cartItemDto.productName());
+        return createCartItemWithPromotion(cartItemDto, product);
     }
 
     private CartItem createCartItemWithPromotion(CartItemDto cartItem, Product product) {
